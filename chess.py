@@ -68,12 +68,12 @@ def main():
         c_start = piece_loc[1]
         print('starting piece: ', board[r_start, c_start])
         if board[r_start, c_start] == W_PAWN:
-            pawn_move = cp.PieceMovement(board)
+            pawn_move = cp.Pawn(board, player)
             piece_move_to = eval(input('Select a row and column: '))
             r_end = piece_move_to[0]
             c_end = piece_move_to[1]
             print('square to move to: ', board[r_end, c_end])
-            board = pawn_move.move(piece=W_PAWN, player='white', r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end, board=board)
+            board = pawn_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end, board=board)
 
 if __name__ == '__main__':
     main()
