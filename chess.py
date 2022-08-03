@@ -22,9 +22,12 @@ B_BISHOP = 'BB'
 B_QUEEN = 'BQ'
 B_KING = 'BK'
 
+EMPTY = '00'
+
+turn_counter = -1
 
 def create_board():
-    board = np.full((RANKS, FILES), '00')
+    board = np.full((RANKS, FILES), EMPTY)
     for n_row in range(RANKS):
         for ele in range(FILES):
             if n_row == 1:
@@ -62,13 +65,15 @@ def main():
     player = 'white'
     board = create_board()
     while True:
+        if player == 'white':
+            turn_counter += 1
         print(board)
         piece_loc = eval(input('Select a row and column: '))
         r_start = piece_loc[0]
         c_start = piece_loc[1]
-        print('starting piece: ', board[r_start, c_start])
+        starting_piece = board[r_start, c_start]
         if board[r_start, c_start] == W_PAWN:
-            pawn_move = cp.Pawn(board, player)
+            pawn_move = cp.Pawn(board, player, turn_counter)
             piece_move_to = eval(input('Select a row and column: '))
             r_end = piece_move_to[0]
             c_end = piece_move_to[1]
