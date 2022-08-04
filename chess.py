@@ -73,12 +73,26 @@ def main():
         c_start = piece_loc[1]
         starting_piece = board[r_start, c_start]
         if board[r_start, c_start] == W_PAWN:
-            pawn_move = cp.Pawn(board, player, turn_counter)
-            piece_move_to = eval(input('Select a row and column: '))
-            r_end = piece_move_to[0]
-            c_end = piece_move_to[1]
-            print('square to move to: ', board[r_end, c_end])
-            board = pawn_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end, board=board)
+            if turn == 0:
+                pawn_move = cp.Pawn(board, player, turn_counter, prev_r_delta=0, prev_c_end=np.nan, rev_piece_moved=EMPTY)
+                piece_move_to = eval(input('Select a row and column: '))
+                r_end = piece_move_to[0]
+                c_end = piece_move_to[1]
+                print('square to move to: ', board[r_end, c_end])
+                board = pawn_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
+                prev_r_delta = abs(r_end - r_start)
+                prev_c_end = c_end
+                prev_piece_moved = starting_piece
+            elif turn > 0:
+                pawn_move = cp.Pawn(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_piece_moved=prev_piece_moved)
+                piece_move_to = eval(input('Select a row and column: '))
+                r_end = piece_move_to[0]
+                c_end = piece_move_to[1]
+                print('square to move to: ', board[r_end, c_end])
+                board = pawn_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
+                prev_r_delta = abs(r_end - r_start)
+                prev_c_end = c_end
+                prev_piece_moved = starting_piece
 
 if __name__ == '__main__':
     main()
