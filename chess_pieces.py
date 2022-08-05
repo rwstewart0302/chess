@@ -57,8 +57,8 @@ class Pawn:
 
     def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board, turn, prev_r_delta, prev_c_end, prev_moved_piece):
         if player == PLAYER_1:
-            try:
-                if r_start == RANKS - 2: # checking pawns in their starting position
+            if r_start == RANKS - 2: # checking pawns in their starting position
+                if 0 < c_start < RANKS - 1:
                     if
                     (
                         board[r_start-1, c_start] == EMPTY and
@@ -71,7 +71,7 @@ class Pawn:
                             (r_end == r_start - 1 and c_end == c_start) or
                             (r_end == r_start - 2 and c_end == c_start) or
                             (r_end == r_start - 1 and c_end == c_start - 1) or
-                            (r_end == r_start - 1 and c_end == c_start + 1:)
+                            (r_end == r_start - 1 and c_end == c_start + 1)
                         ):
                             return True
                         else:
@@ -186,213 +186,461 @@ class Pawn:
                             return False
                     else:
                         return False
-                elif r_start != RANKS - 2: # checking all other pawn non-starting positions (including en passant)
-                    if turn > 0 and r_start == 4 and prev_r_delta == 2 and prev_piece_moved == B_PAWN and 0 < c_start < RANKS - 1  and (prev_c_end - 1 == c_start or prev_c_end + 1 == c_start):
-                        if # 1
-                        (
-                            board[r_start-1, c_start] == EMPTY and
-                            board[r_start-1, c_start-1] != EMPTY and
-                            board[r_start-1, c_start+1] != EMPTY and
 
-                        ):
-                            if
-                            (
-                                (r_end == r_start - 1 and c_end == c_start) or
-                                (r_end == r_start - 1 and c_end == c_start - 1) or
-                                (r_end == r_start - 1 and c_end == c_start + 1)
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 2
+                elif c_start == RANKS - 1:
+                    if
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] == EMPTY and
+                        board[r_start-1, c_start-1] != EMPTY and
+                    ):
+                        if
                         (
-                            board[r_start-1, c_start] == EMPTY and
-                            board[r_start-1, c_start-1] != EMPTY and
-                            board[r_start-1, c_start+1] == EMPTY
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 2 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start - 1) or
                         ):
-                            if
-                            (
-                                (r_end == r_start - 1 and c_end == c_start) or
-                                (r_end == r_start - 1 and c_end == c_start - 1)
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 3
+                            return True
+                        else:
+                            return False
+
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] == EMPTY and
+                        board[r_start-1, c_start-1] == EMPTY and
+                    ):
+                        if
                         (
-                            board[r_start-1, c_start] == EMPTY and
-                            board[r_start-1, c_start-1] == EMPTY and
-                            board[r_start-1, c_start+1] == EMPTY
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 2 and c_end == c_start) or
                         ):
-                            if
-                            (
-                                r_end == r_start - 1 and c_end == c_start
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 4
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] == EMPTY and
+                        board[r_start-1, c_start-1] != EMPTY and
+                    ):
+                        if
                         (
-                            board[r_start-1, c_start] != EMPTY and
-                            board[r_start-1, c_start-1] != EMPTY and
-                            board[r_start-1, c_start+1] != EMPTY
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 2 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start - 1) or
                         ):
-                            if
-                            (
-                                (r_end == r_start - 1 and c_end == c_start - 1) or
-                                (r_end == r_start - 1 and c_end == c_start + 1)
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 5
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] == EMPTY and
+                        board[r_start-1, c_start-1] == EMPTY and
+                    ):
+                        if
                         (
-                            board[r_start-1, c_start] != EMPTY and
-                            board[r_start-1, c_start-1] == EMPTY and
-                            board[r_start-1, c_start+1] != EMPTY
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 2 and c_end == c_start) or
                         ):
-                            if
-                            (
-                                r_end == r_start - 1 and c_end == c_start + 1
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 6
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] != EMPTY and
+                        board[r_start-1, c_start-1] != EMPTY and
+                    ):
+                        if
                         (
-                            board[r_start-1, c_start] != EMPTY and
-                            board[r_start-1, c_start-1] != EMPTY and
-                            board[r_start-1, c_start+1] == EMPTY
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start - 1) or
                         ):
-                            if
-                            (
-                                r_end == r_start - 1 and c_end == c_start - 1
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 7
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] != EMPTY and
+                        board[r_start-1, c_start-1] == EMPTY and
+                    ):
+                        if
                         (
-                            board[r_start-1, c_start] == EMPTY and
-                            board[r_start-1, c_start-1] == EMPTY and
-                            board[r_start-1, c_start+1] != EMPTY
+                            (r_end == r_start - 1 and c_end == c_start) or
                         ):
-                            if
-                            (
-                                (r_end == r_start - 1 and c_end == c_start) or
-                                (r_end == r_start - 1 and c_end == c_start + 1)
-                            ):
-                                return True
-                            else:
-                                return False
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] != EMPTY and
+                        board[r_start-1, c_start-1] != EMPTY and
+                    ):
+                        if
+                        (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start - 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] != EMPTY and
+                        board[r_start-1, c_start-1] == EMPTY and
+                    ):
+                        if
+                        (
+                            r_end == r_start - 1 and c_end == c_start
+                        ):
+                            return True
+                        else:
+                            return False
                     else:
-                        if # 1
+                        return False
+                elif c_start == 0:
+                    if
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] == EMPTY and
+                        board[r_start-1, c_start+1] != EMPTY
+                    ):
+                        if
                         (
-                            board[r_start-1, c_start] == EMPTY and
-                            board[r_start-1, c_start-1] != EMPTY and
-                            board[r_start-1, c_start+1] != EMPTY
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 2 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start + 1)
                         ):
-                            if
-                            (
-                                (r_end == r_start - 1 and c_end == c_start) or
-                                (r_end == r_start - 1 and c_end == c_start - 1) or
-                                (r_end == r_start - 1 and c_end == c_start + 1)
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 2
-                        (
-                            board[r_start-1, c_start] == EMPTY and
-                            board[r_start-1, c_start-1] != EMPTY and
-                            board[r_start-1, c_start+1] == EMPTY
-                        ):
-                            if
-                            (
-                                (r_end == r_start - 1 and c_end == c_start) or
-                                (r_end == r_start - 1 and c_end == c_start - 1)
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 3
-                        (
-                            board[r_start-1, c_start] == EMPTY and
-                            board[r_start-1, c_start-1] == EMPTY and
-                            board[r_start-1, c_start+1] == EMPTY
-                        ):
-                            if
-                            (
-                                r_end == r_start - 1 and c_end == c_start
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 4
-                        (
-                            board[r_start-1, c_start] != EMPTY and
-                            board[r_start-1, c_start-1] != EMPTY and
-                            board[r_start-1, c_start+1] != EMPTY
-                        ):
-                            if
-                            (
-                                (r_end == r_start - 1 and c_end == c_start - 1) or
-                                (r_end == r_start - 1 and c_end == c_start + 1)
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 5
-                        (
-                            board[r_start-1, c_start] != EMPTY and
-                            board[r_start-1, c_start-1] == EMPTY and
-                            board[r_start-1, c_start+1] != EMPTY
-                        ):
-                            if
-                            (
-                                r_end == r_start - 1 and c_end == c_start + 1
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 6
-                        (
-                            board[r_start-1, c_start] != EMPTY and
-                            board[r_start-1, c_start-1] != EMPTY and
-                            board[r_start-1, c_start+1] == EMPTY
-                        ):
-                            if
-                            (
-                                r_end == r_start - 1 and c_end == c_start - 1
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif # 7
-                        (
-                            board[r_start-1, c_start] == EMPTY and
-                            board[r_start-1, c_start-1] == EMPTY and
-                            board[r_start-1, c_start+1] != EMPTY
-                        ):
-                            if
-                            (
-                                (r_end == r_start - 1 and c_end == c_start) or
-                                (r_end == r_start - 1 and c_end == c_start + 1)
-                            ):
-                                return True
-                            else:
-                                return False
+                            return True
+                        else:
+                            return False
 
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] == EMPTY and
+                        board[r_start-1, c_start+1] != EMPTY
+                    ):
+                        if
+                        (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 2 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] == EMPTY and
+                        board[r_start-1, c_start+1] == EMPTY
+                    ):
+                        if
+                        (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 2 and c_end == c_start) or
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] == EMPTY and
+                        board[r_start-1, c_start+1] == EMPTY
+                    ):
+                        if
+                        (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 2 and c_end == c_start) or
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] != EMPTY and
+                        board[r_start-1, c_start+1] != EMPTY
+                    ):
+                        if
+                        (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] != EMPTY and
+                        board[r_start-1, c_start+1] != EMPTY
+                    ):
+                        if
+                        (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] != EMPTY and
+                        board[r_start-1, c_start+1] == EMPTY
+                    ):
+                        if
+                        (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif
+                    (
+                        board[r_start-1, c_start] == EMPTY and
+                        board[r_start-2, c_start] != EMPTY and
+                        board[r_start-1, c_start+1] == EMPTY
+                    ):
+                        if
+                        (
+                            r_end == r_start - 1 and c_end == c_start
+                        ):
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
 
-            except IndexError:
-                if c_start == 0 and (board[r_start-1, c_start] == EMPTY or board[r_start-1, c_start+1] != EMPTY):
-                    print('2')
-                    return True
-                elif c_start == 7 and (board[r_start-1, c_start] == EMPTY or board[r_start-1, c_start-1] != EMPTY):
-                    print('3')
-                    return True
-                else:
-                    return False
+            elif r_start != RANKS - 2: # checking all other pawn non-starting positions (except promotion square)
+                if r_start == 4 and prev_r_delta == 2 and prev_piece_moved == B_PAWN and (prev_c_end - 1 == c_start or prev_c_end + 1 == c_start): # en passant
+                    if 0 < c_start < RANKS - 1:
+                        if prev_c_end - 1 == c_start:
+                            if
+                            (
+                                board[r_start-1, c_start] == EMPTY and
+                                board[r_start-1, c_start+1] == EMPTY
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start) or
+                                    (r_end == r_start - 1 and c_end == c_start - 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] == EMPTY and
+                                board[r_start-1, c_start+1] != EMPTY
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start) or
+                                    (r_end == r_start - 1 and c_end == c_start - 1) or # en passant
+                                    (r_end == r_start - 1 and c_end == c_start + 1)
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] != EMPTY and
+                                board[r_start-1, c_start+1] == EMPTY
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] != EMPTY and
+                                board[r_start-1, c_start+1] != EMPTY
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start - 1) or # en passant
+                                    (r_end == r_start - 1 and c_end == c_start + 1)
+                                ):
+                                    return True
+                                else:
+                                    return False
+                        elif prev_c_end + 1 == c_start:
+                            if
+                            (
+                                board[r_start-1, c_start] == EMPTY and
+                                board[r_start-1, c_start-1] == EMPTY
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start) or
+                                    (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] == EMPTY and
+                                board[r_start-1, c_start-1] != EMPTY
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start) or
+                                    (r_end == r_start - 1 and c_end == c_start + 1) or # en passant
+                                    (r_end == r_start - 1 and c_end == c_start - 1)
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] != EMPTY and
+                                board[r_start-1, c_start-1] == EMPTY
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start + 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] != EMPTY and
+                                board[r_start-1, c_start-1] != EMPTY
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start - 1) or
+                                    (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                    elif c_start == RANKS - 1:
+                        if prev_c_end - 1 == c_start:
+                            if
+                            (
+                                board[r_start-1, c_start] == EMPTY and
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start) or
+                                    (r_end == r_start - 1 and c_end == c_start - 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] == EMPTY and
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start) or
+                                    (r_end == r_start - 1 and c_end == c_start - 1) or # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] != EMPTY and
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] != EMPTY and
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start - 1) or # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                    elif c_start == 0:
+                        if prev_c_end + 1 == c_start:
+                            if
+                            (
+                                board[r_start-1, c_start] == EMPTY and
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start) or
+                                    (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] == EMPTY and
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start) or
+                                    (r_end == r_start - 1 and c_end == c_start + 1) or # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] != EMPTY and
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start + 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif
+                            (
+                                board[r_start-1, c_start] != EMPTY and
+                            ):
+                                if
+                                (
+                                    (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                else: # checking all but promotion square (en passant not possible)
+                    if 0 < c_start < RANKS - 1:
+                        pass
+                    elif c_start == RANKS - 1:
+                        pass
+                    elif c_start == 0:
+                        pass
+
+            elif r_start == RANKS - 2: # checking if moving to promotion square (last rank)
+                if 0 < c_start < RANKS - 1:
+                    pass
+                elif c_start == RANKS - 1:
+                    pass
+                elif c_start == 0:
+                    pass
+
 
 
 class Rook:
