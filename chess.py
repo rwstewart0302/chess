@@ -1,4 +1,4 @@
-# import pygame
+import pygame
 import sys
 import numpy as np
 import chess_pieces as cp
@@ -82,41 +82,72 @@ def create_board():
 
     return np.flip(board, 0)
 
+### TODO:
+### - CLEANOUT ALL PRINTS AND INPUTS WHEN PYGAME IS IMPLEMENTED
+### - CREATE GLOBAL JSON FILE FOR PIECE STRING VALUES
+### - ADD SOME PRINT STATEMENTS FOR INVALID PIECE SELECTIONS
 
 def main():
     player = 'White'
-    board = create_board()
-    turn_counter = -1
-    while True:
-        if player == 'White':
-            turn_counter += 1
+    board = create_board() #
+    turn_counter = 0
+    while True: # continue playing until checkmate is reached or the game is quit
+        # setting our player based on turn
+        if turn_counter % 2 == 0:
+            player = 'White'
+        elif turn_counter % 2 != 0:
+            player = 'Black'
+
         print(board)
-        piece_loc = eval(input('Select a row and column: (piece selection) '))
-        r_start = piece_loc[0]
-        c_start = piece_loc[1]
-        starting_piece = board[r_start, c_start]
-        print('starting piece: ', starting_piece)
-        if board[r_start, c_start] == W_PAWN:
-            if turn_counter == 0:
-                pawn_move = cp.Pawn(board, player, turn_counter, prev_r_delta=0, prev_c_end=np.nan, prev_moved_piece=EMPTY)
-                piece_move_to = eval(input('Select a row and column: (move selection) '))
-                r_end = piece_move_to[0]
-                c_end = piece_move_to[1]
-                print('square to move to: ', board[r_end, c_end])
-                board = pawn_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
+        print()
+        print(f'It is {player}\s turn...')
+
+        while True: # continue asking for player's piece selection and movement until their choice is valid
+            piece_loc = eval(input('Select a row and column: (piece selection) '))
+            piece_move_to = eval(input('Select a row and column: (move selection) '))
+
+            r_start = piece_loc[0]
+            c_start = piece_loc[1]
+            starting_piece = board[r_start, c_start]
+
+            print('starting piece: ', starting_piece)
+
+            r_end = piece_move_to[0]
+            c_end = piece_move_to[1]
+
+            print('square to move to: ', board[r_end, c_end])
+
+            if turn_counter == 0: # creating initial values for previous moved pieces to check for en passant
+                prev_r_delta=0
+                prev_c_end=np.nan
+                prev_moved_piece=EMPTY
+            else:
+                pass
+
+            # instiatiating the class for the piece selected
+            if board[r_start, c_start] == PIECES[player]['PAWN']:
+                piece_move = cp.Pawn(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+            elif board[r_start, c_start] == PIECES[player]['KNIGHT']:
+                piece_move = cp.Knight(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+            elif board[r_start, c_start] == PIECES[player]['BISHOP']:
+                piece_move = cp.Bishop(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+            elif board[r_start, c_start] == PIECES[player]['ROOK']:
+                piece_move = cp.Rook(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+            elif board[r_start, c_start] == PIECES[player]['QUEEN']:
+                piece_move = cp.Queen(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+            elif board[r_start, c_start] == PIECES[player]['KING']:
+                piece_move = cp.King(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+
+            board, move_check = piece_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
+
+            if move_check: # if the move is valid then go to the next player
                 prev_r_delta = abs(r_end - r_start)
                 prev_c_end = c_end
                 prev_moved_piece = starting_piece
-            elif turn_counter > 0:
-                pawn_move = cp.Pawn(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
-                piece_move_to = eval(input('Select a row and column: '))
-                r_end = piece_move_to[0]
-                c_end = piece_move_to[1]
-                print('square to move to: ', board[r_end, c_end])
-                board = pawn_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
-                prev_r_delta = abs(r_end - r_start)
-                prev_c_end = c_end
-                prev_moved_piece = starting_piece
+                turn_counter += 1
+                break
+            elif not move_check: # if the move is not valid then ask for another move
+                pass
 
 if __name__ == '__main__':
     main()

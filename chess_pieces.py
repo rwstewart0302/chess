@@ -1,4 +1,5 @@
 import piece_movement as pm
+import check
 
 PIECES = {
     'White':
@@ -70,66 +71,160 @@ class Pawn:
         self.r_end = r_end
         self.c_end = c_end
         if self.piece == W_PAWN or self.piece == B_PAWN:
-            print('test: ', pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.turn, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece))
-            if pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.turn, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
+            print('test: ', pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece))
+            if pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
                 self.board[self.r_start, self.c_start] = EMPTY
                 self.board[self.r_end, self.c_end] = self.piece
-
-        elif self.player == 'test':
-            pass # move black pawn pieces
-        return self.board
-
-### TODO - FIX ALL SYNTAX ERRORS IN IF STATEMENTS ###
-
-
-
+                return self.board, True
+            else:
+                return self.board, False
 
 class Rook:
-    def __init__(self):
+    def __init__(board, player, turn, prev_r_delta, prev_c_end, prev_moved_piece):
         self.rook = 5
+        self.board = board
+        self.turn = turn
+        self.player = player
+        self.prev_r_delta = prev_r_delta
+        self.prev_c_end = prev_c_end
+        self.prev_moved_piece = prev_moved_piece
+        if self.player == PLAYER_1:
+            self.piece = W_ROOK
+        elif self.player == PLAYER_2:
+            self.piece = B_ROOK
 
-    def move(player):
-        if player == 'white':
-            pass # move white pieces
-        elif player == 'black':
-            pass # move black pieces
+        self.r_start = None
+        self.c_start = None
+        self.r_end = None
+        self.c_end = None
+
+    def move(self, r_start, c_start, r_end, c_end):
+        self.r_start = r_start
+        self.c_start = c_start
+        self.r_end = r_end
+        self.c_end = c_end
+        if self.piece == W_ROOK or self.piece == B_ROOK:
+            if pm.is_valid_rook_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
+                self.board[self.r_start, self.c_start] = EMPTY
+                self.board[self.r_end, self.c_end] = self.piece
+        return self.board
 
 class Knight:
-    def __init__(self):
+    def __init__(board, player, turn, prev_r_delta, prev_c_end, prev_moved_piece):
         self.knight = 3
+        self.board = board
+        self.turn = turn
+        self.player = player
+        self.prev_r_delta = prev_r_delta
+        self.prev_c_end = prev_c_end
+        self.prev_moved_piece = prev_moved_piece
+        if self.player == PLAYER_1:
+            self.piece = W_KNIGHT
+        elif self.player == PLAYER_2:
+            self.piece = B_KNIGHT
 
-    def move(player):
-        if player == 'white':
-            pass # move white pieces
-        elif player == 'black':
-            pass # move black pieces
+        self.r_start = None
+        self.c_start = None
+        self.r_end = None
+        self.c_end = None
+
+    def move(self, r_start, c_start, r_end, c_end):
+        self.r_start = r_start
+        self.c_start = c_start
+        self.r_end = r_end
+        self.c_end = c_end
+        if self.piece == W_KNIGHT or self.piece == B_KNIGHT:
+            if pm.is_valid_knight_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
+                self.board[self.r_start, self.c_start] = EMPTY
+                self.board[self.r_end, self.c_end] = self.piece
+        return self.board
 
 class Bishop:
-    def __init__(self):
+    def __init__(board, player, turn, prev_r_delta, prev_c_end, prev_moved_piece):
         self.bishop = 3
+        self.board = board
+        self.turn = turn
+        self.player = player
+        self.prev_r_delta = prev_r_delta
+        self.prev_c_end = prev_c_end
+        self.prev_moved_piece = prev_moved_piece
+        if self.player == PLAYER_1:
+            self.piece = W_BISHOP
+        elif self.player == PLAYER_2:
+            self.piece = B_BISHOP
 
-    def move(player):
-        if player == 'white':
-            pass # move white pieces
-        elif player == 'black':
-            pass # move black pieces
+        self.r_start = None
+        self.c_start = None
+        self.r_end = None
+        self.c_end = None
+
+    def move(self, r_start, c_start, r_end, c_end):
+        self.r_start = r_start
+        self.c_start = c_start
+        self.r_end = r_end
+        self.c_end = c_end
+        if self.piece == W_BISHOP or self.piece == B_BISHOP:
+            if pm.is_valid_bishop_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
+                self.board[self.r_start, self.c_start] = EMPTY
+                self.board[self.r_end, self.c_end] = self.piece
+        return self.board
 
 class Queen:
-    def __init__(self):
+    def __init__(board, player, turn, prev_r_delta, prev_c_end, prev_moved_piece):
         self.queen = 9
+        self.board = board
+        self.turn = turn
+        self.player = player
+        self.prev_r_delta = prev_r_delta
+        self.prev_c_end = prev_c_end
+        self.prev_moved_piece = prev_moved_piece
+        if self.player == PLAYER_1:
+            self.piece = W_QUEEN
+        elif self.player == PLAYER_2:
+            self.piece = B_QUEEN
 
-    def move(player):
-        if player == 'white':
-            pass # move white pieces
-        elif player == 'black':
-            pass # move black pieces
+        self.r_start = None
+        self.c_start = None
+        self.r_end = None
+        self.c_end = None
+
+    def move(self, r_start, c_start, r_end, c_end):
+        self.r_start = r_start
+        self.c_start = c_start
+        self.r_end = r_end
+        self.c_end = c_end
+        if self.piece == W_QUEEN or self.piece == B_QUEEN:
+            if pm.is_valid_queen_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
+                self.board[self.r_start, self.c_start] = EMPTY
+                self.board[self.r_end, self.c_end] = self.piece
+        return self.board
 
 class King:
-    def __init__(self):
-        self.king = 1_000
+    def __init__(board, player, turn, prev_r_delta, prev_c_end, prev_moved_piece):
+        self.queen = 1_000_000
+        self.board = board
+        self.turn = turn
+        self.player = player
+        self.prev_r_delta = prev_r_delta
+        self.prev_c_end = prev_c_end
+        self.prev_moved_piece = prev_moved_piece
+        if self.player == PLAYER_1:
+            self.piece = W_KING
+        elif self.player == PLAYER_2:
+            self.piece = B_KING
 
-    def move(player):
-        if player == 'white':
-            pass # move white pieces
-        elif player == 'black':
-            pass # move black pieces
+        self.r_start = None
+        self.c_start = None
+        self.r_end = None
+        self.c_end = None
+
+    def move(self, r_start, c_start, r_end, c_end):
+        self.r_start = r_start
+        self.c_start = c_start
+        self.r_end = r_end
+        self.c_end = c_end
+        if self.piece == W_KING or self.piece == B_KING:
+            if pm.is_valid_king_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
+                self.board[self.r_start, self.c_start] = EMPTY
+                self.board[self.r_end, self.c_end] = self.piece
+        return self.board
