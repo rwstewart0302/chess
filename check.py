@@ -57,7 +57,7 @@ def is_check(player, board):
         r_king = int(index_king[0])
         c_king = int(index_king[1])
 
-        if r_king < 6: # checking for pawn checks
+        if r_king > 1: # checking for pawn checks
             piece = B_PAWN
             pawn_index = np.where(board == piece)
             r_pawn = list(pawn_index[0])
@@ -74,7 +74,7 @@ def is_check(player, board):
             r_knight = list(knight_index[0])
             c_knight = list(knight_index[1])
             for r_start, c_start in zip(r_knight, c_knight):
-                if py.is_valid_knight_move(piece, PLAYER_2, r_start, c_start, r_king, c_king, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                if py.is_valid_knight_move(piece, PLAYER_2, r_start, c_start, r_king, c_king, board):
                     return True
                 else:
                     pass
@@ -117,7 +117,7 @@ def is_check(player, board):
         r_king = int(index_king[0])
         c_king = int(index_king[1])
 
-        if r_king > 1: # checking for pawn checks
+        if r_king < 6: # checking for pawn checks
             piece = W_PAWN
             pawn_index = np.where(board == piece)
             r_pawn = list(pawn_index[0])
@@ -134,7 +134,7 @@ def is_check(player, board):
             r_knight = list(knight_index[0])
             c_knight = list(knight_index[1])
             for r_start, c_start in zip(r_knight, c_knight):
-                if py.is_valid_knight_move(piece, PLAYER_2, r_start, c_start, r_king, c_king, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                if py.is_valid_knight_move(piece, PLAYER_2, r_start, c_start, r_king, c_king, board):
                     return True
                 else:
                     pass

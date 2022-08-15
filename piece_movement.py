@@ -1543,12 +1543,63 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
     except IndexError:
         return False
 
-def is_valid_knight_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
+def is_valid_knight_move(piece, player, r_start, c_start, r_end, c_end, board):
     try:
         if player == PLAYER_1:
-            if 2 <= r_start <= 5:
-                if 2 <= c_start <= 5:
-                    pass
+            if r_end == r_start - 2 and c_end == c_start + 1:
+                if board[r_end, c_end] not in list(PIECES['White'].values()):
+                    return True
+            elif r_end == r_start - 2 and c_end == c_start - 1:
+                if board[r_end, c_end] not in list(PIECES['White'].values()):
+                    return True
+            elif r_end == r_start + 2 and c_end == c_start + 1:
+                if board[r_end, c_end] not in list(PIECES['White'].values()):
+                    return True
+            elif r_end == r_start + 2 and c_end == c_start - 1:
+                if board[r_end, c_end] not in list(PIECES['White'].values()):
+                    return True
+            elif r_end == r_start + 1 and c_end == c_start - 2:
+                if board[r_end, c_end] not in list(PIECES['White'].values()):
+                    return True
+            elif r_end == r_start - 1 and c_end == c_start - 2:
+                if board[r_end, c_end] not in list(PIECES['White'].values()):
+                    return True
+            elif r_end == r_start + 1 and c_end == c_start + 2:
+                if board[r_end, c_end] not in list(PIECES['White'].values()):
+                    return True
+            elif r_end == r_start - 1 and c_end == c_start + 2:
+                if board[r_end, c_end] not in list(PIECES['White'].values()):
+                    return True
+            else:
+                return False
+        elif player == PLAYER_2:
+            if r_end == r_start - 2 and c_end == c_start + 1:
+                if board[r_end, c_end] not in list(PIECES['Black'].values()):
+                    return True
+            elif r_end == r_start - 2 and c_end == c_start - 1:
+                if board[r_end, c_end] not in list(PIECES['Black'].values()):
+                    return True
+            elif r_end == r_start + 2 and c_end == c_start + 1:
+                if board[r_end, c_end] not in list(PIECES['Black'].values()):
+                    return True
+            elif r_end == r_start + 2 and c_end == c_start - 1:
+                if board[r_end, c_end] not in list(PIECES['Black'].values()):
+                    return True
+            elif r_end == r_start + 1 and c_end == c_start - 2:
+                if board[r_end, c_end] not in list(PIECES['Black'].values()):
+                    return True
+            elif r_end == r_start - 1 and c_end == c_start - 2:
+                if board[r_end, c_end] not in list(PIECES['Black'].values()):
+                    return True
+            elif r_end == r_start + 1 and c_end == c_start + 2:
+                if board[r_end, c_end] not in list(PIECES['Black'].values()):
+                    return True
+            elif r_end == r_start - 1 and c_end == c_start + 2:
+                if board[r_end, c_end] not in list(PIECES['Black'].values()):
+                    return True
+            else:
+                return False
+
     except IndexError:
         return False
 

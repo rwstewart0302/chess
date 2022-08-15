@@ -105,7 +105,7 @@ def main():
 
             print(f'{winning_player} wins!')
             break
-            
+
         print(board)
         print()
         print(f'It is {player}\s turn...')
@@ -143,9 +143,9 @@ def main():
 
                 # instiatiating the class for the piece selected
                 if board[r_start, c_start] == PIECES[player]['PAWN']:
-                    piece_move = cp.Pawn(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                    piece_move = cp.Pawn(board, player, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
                 elif board[r_start, c_start] == PIECES[player]['KNIGHT']:
-                    piece_move = cp.Knight(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                    piece_move = cp.Knight(board, player)
                 elif board[r_start, c_start] == PIECES[player]['BISHOP']:
                     piece_move = cp.Bishop(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
                 elif board[r_start, c_start] == PIECES[player]['ROOK']:
