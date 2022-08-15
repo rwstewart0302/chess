@@ -1544,10 +1544,13 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
         return False
 
 def is_valid_knight_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
-    if player == PLAYER_1:
-        if 2 <= r_start <= 5:
-            if 2 <= c_start <= 5:
-                pass
+    try:
+        if player == PLAYER_1:
+            if 2 <= r_start <= 5:
+                if 2 <= c_start <= 5:
+                    pass
+    except IndexError:
+        return False
 
 def is_valid_bishop_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
     if player == PLAYER_1:
