@@ -36,8 +36,17 @@ B_BISHOP = PIECES['Black']['BISHOP']
 B_QUEEN = PIECES['Black']['QUEEN']
 B_KING = PIECES['Black']['KING']
 
-def is_check(board):
-    pass
+def is_check(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
+    # checking if player_1's king is in check
+    if player == PLAYER_1:
+        index_king = np.where(board == W_KING)
+        r_king = int(index_king[0])
+        c_king = int(index_king[1])
+        if r_king < 2:
+            if py.is_valid_pawn_move(piece, player, r_start, c_start, r_king, c_king, board,  prev_r_delta, prev_c_end, prev_moved_piece)
+
+
+
 
 def is_checkmate():
     pass
@@ -49,4 +58,5 @@ def is_not_check_move(piece, player, r_start, c_start, r_end, c_end, board,  pre
                 check_board = board
                 check_board[r_start, c_start] = EMPTY
                 check_board[r_end, c_end] = piece
-                return not check.is_check(check_board, OTHER_VARIABLES):
+                # return not check.is_check(check_board, OTHER_VARIABLES):
+                pass
