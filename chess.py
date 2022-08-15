@@ -2,6 +2,7 @@ import pygame
 import sys
 import numpy as np
 import chess_pieces as cp
+import check
 
 SQUARESIZE = 100 # pixels per square
 
@@ -96,6 +97,15 @@ def main():
         elif turn_counter % 2 != 0:
             player = 'Black'
 
+        if check.is_checkmate(player, board):
+            if player == 'White':
+                winning_player = 'Black'
+            elif player == 'Black':
+                winning_player = 'White'
+
+            print(f'{winning_player} wins!')
+            break
+            
         print(board)
         print()
         print(f'It is {player}\s turn...')

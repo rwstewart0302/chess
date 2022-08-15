@@ -50,7 +50,7 @@ prev_r_delta = 0
 prev_c_end = 0
 prev_moved_piece = EMPTY
 
-def is_check(piece, player, board):
+def is_check(player, board):
     # checking if player_1's king is in check
     if player == PLAYER_1:
         index_king = np.where(board == W_KING)
@@ -173,8 +173,8 @@ def is_check(piece, player, board):
 
 
 
-def is_checkmate(piece, player, board):
-    if is_check(piece, player, board): # checking if player_1's king is in checkmate
+def is_checkmate(player, board):
+    if is_check(player, board): # checking if player_1's king is in checkmate
         if player == PLAYER_1:
             index_king = np.where(board == W_KING)
             r_king = int(index_king[0])

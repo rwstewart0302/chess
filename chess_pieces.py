@@ -106,10 +106,10 @@ class Pawn:
 
                 self.temp_board[self.r_end, self.c_end] = self.piece
 
-                if check.is_check(self.piece, self.player, self.temp_board):
+                if check.is_check(self.player, self.temp_board):
                     return self.board, False
 
-                elif not check.is_check(self.piece, self.player, self.temp_board):
+                elif not check.is_check(self.player, self.temp_board):
                     self.board = self.temp_board
                     return self.board, True
             else:
