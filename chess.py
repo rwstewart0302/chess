@@ -149,7 +149,7 @@ def main():
                 elif board[r_start, c_start] == PIECES[player]['BISHOP']:
                     piece_move = cp.Bishop(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
                 elif board[r_start, c_start] == PIECES[player]['ROOK']:
-                    piece_move = cp.Rook(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                    piece_move = cp.Rook(board, player)
                 elif board[r_start, c_start] == PIECES[player]['QUEEN']:
                     piece_move = cp.Queen(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
                 elif board[r_start, c_start] == PIECES[player]['KING']:

@@ -94,7 +94,7 @@ def is_check(player, board):
             r_rook = list(rook_index[0])
             c_rook = list(rook_index[1])
             for r_start, c_start in zip(r_rook, c_rook):
-                if py.is_valid_rook_move(piece, PLAYER_2, r_start, c_start, r_king, c_king, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                if py.is_valid_rook_move(piece, PLAYER_2, r_start, c_start, r_king, c_king, board):
                     return True
                 else:
                     pass
@@ -154,7 +154,7 @@ def is_check(player, board):
             r_rook = list(rook_index[0])
             c_rook = list(rook_index[1])
             for r_start, c_start in zip(r_rook, c_rook):
-                if py.is_valid_rook_move(piece, PLAYER_2, r_start, c_start, r_king, c_king, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                if py.is_valid_rook_move(piece, PLAYER_2, r_start, c_start, r_king, c_king, board):
                     return True
                 else:
                     pass
@@ -211,28 +211,28 @@ def is_checkmate(player, board):
             for r_start, c_start in zip(r_knight, c_knight):
                 for r in range(RANKS):
                     for c in range(FILES):
-                        if py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start+c, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                        if py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start+c, board):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
                             temp_board[r_start+r, c_start+c] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
-                        elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start-c, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                        elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start-c, board):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
-                            temp_board[r_start+r, c_start+c] = piece
+                            temp_board[r_start+r, c_start-c] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
-                        elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start+c, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                        elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start+c, board):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
-                            temp_board[r_start+r, c_start+c] = piece
+                            temp_board[r_start-r, c_start+c] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
-                        elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start-c, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                        elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start-c, board):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
-                            temp_board[r_start+r, c_start+c] = piece
+                            temp_board[r_start-r, c_start-c] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
                         else:
@@ -248,13 +248,13 @@ def is_checkmate(player, board):
                     if py.is_valid_bishop_move(piece, player, r_start, c_start, r_start+i, c_start+i, board, prev_r_delta, prev_c_end, prev_moved_piece):
                         temp_board = board
                         temp_board[r_start, c_start] = EMPTY
-                        temp_board[r_start+r, c_start+c] = piece
+                        temp_board[r_start+i, c_start+i] = piece
                         if not is_check(piece, player, temp_board):
                             return False
                     elif py.is_valid_bishop_move(piece, player, r_start, c_start, r_start-i, c_start-i, board, prev_r_delta, prev_c_end, prev_moved_piece):
                         temp_board = board
                         temp_board[r_start, c_start] = EMPTY
-                        temp_board[r_start+r, c_start+c] = piece
+                        temp_board[r_start-i, c_start-i] = piece
                         if not is_check(piece, player, temp_board):
                             return False
                     else:
@@ -267,25 +267,25 @@ def is_checkmate(player, board):
             c_rook = list(rook_index[1])
             for r_start, c_start in zip(r_rook, c_rook):
                 for i in range(RANKS):
-                    if py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start+i, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                    if py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start+i, board):
+                        temp_board = board
+                        temp_board[r_start, c_start] = EMPTY
+                        temp_board[r_start, c_start+c] = piece
+                        if not is_check(piece, player, temp_board):
+                            return False
+                    elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start-i, board):
+                        temp_board = board
+                        temp_board[r_start, c_start] = EMPTY
+                        temp_board[r_start, c_start-i] = piece
+                        if not is_check(piece, player, temp_board):
+                            return False
+                    elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start+i, c_start, board):
                         temp_board = board
                         temp_board[r_start, c_start] = EMPTY
                         temp_board[r_start+r, c_start+c] = piece
                         if not is_check(piece, player, temp_board):
                             return False
-                    elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start-i, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                        temp_board = board
-                        temp_board[r_start, c_start] = EMPTY
-                        temp_board[r_start+r, c_start+c] = piece
-                        if not is_check(piece, player, temp_board):
-                            return False
-                    elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start+i, c_start, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                        temp_board = board
-                        temp_board[r_start, c_start] = EMPTY
-                        temp_board[r_start+r, c_start+c] = piece
-                        if not is_check(piece, player, temp_board):
-                            return False
-                    elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start-i, c_start, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                    elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start-i, c_start, board):
                         temp_board = board
                         temp_board[r_start, c_start] = EMPTY
                         temp_board[r_start+r, c_start+c] = piece
@@ -367,28 +367,28 @@ def is_checkmate(player, board):
                 for r_start, c_start in zip(r_knight, c_knight):
                     for r in range(RANKS):
                         for c in range(FILES):
-                            if py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start+c, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                            if py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start+c, board):
                                 temp_board = board
                                 temp_board[r_start, c_start] = EMPTY
                                 temp_board[r_start+r, c_start+c] = piece
                                 if not is_check(piece, player, temp_board):
                                     return False
-                            elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start-c, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                            elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start-c, board):
                                 temp_board = board
                                 temp_board[r_start, c_start] = EMPTY
-                                temp_board[r_start+r, c_start+c] = piece
+                                temp_board[r_start+r, c_start-c] = piece
                                 if not is_check(piece, player, temp_board):
                                     return False
-                            elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start+c, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                            elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start+c, board):
                                 temp_board = board
                                 temp_board[r_start, c_start] = EMPTY
-                                temp_board[r_start+r, c_start+c] = piece
+                                temp_board[r_start-r, c_start+c] = piece
                                 if not is_check(piece, player, temp_board):
                                     return False
-                            elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start-c, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                            elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start-c, board):
                                 temp_board = board
                                 temp_board[r_start, c_start] = EMPTY
-                                temp_board[r_start+r, c_start+c] = piece
+                                temp_board[r_start-r, c_start-c] = piece
                                 if not is_check(piece, player, temp_board):
                                     return False
                             else:
@@ -404,13 +404,13 @@ def is_checkmate(player, board):
                         if py.is_valid_bishop_move(piece, player, r_start, c_start, r_start+i, c_start+i, board, prev_r_delta, prev_c_end, prev_moved_piece):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
-                            temp_board[r_start+r, c_start+c] = piece
+                            temp_board[r_start+i, c_start+i] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
                         elif py.is_valid_bishop_move(piece, player, r_start, c_start, r_start-i, c_start-i, board, prev_r_delta, prev_c_end, prev_moved_piece):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
-                            temp_board[r_start+r, c_start+c] = piece
+                            temp_board[r_start-i, c_start-i] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
                         else:
@@ -423,28 +423,28 @@ def is_checkmate(player, board):
                 c_rook = list(rook_index[1])
                 for r_start, c_start in zip(r_rook, c_rook):
                     for i in range(RANKS):
-                        if py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start+i, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                        if py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start+i, board):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
-                            temp_board[r_start+r, c_start+c] = piece
+                            temp_board[r_start, c_start+i] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
-                        elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start-i, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                        elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start-i, board):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
-                            temp_board[r_start+r, c_start+c] = piece
+                            temp_board[r_start, c_start-i] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
-                        elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start+i, c_start, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                        elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start+i, c_start, board):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
-                            temp_board[r_start+r, c_start+c] = piece
+                            temp_board[r_start+i, c_start] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
-                        elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start-i, c_start, board, prev_r_delta, prev_c_end, prev_moved_piece):
+                        elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start-i, c_start, board):
                             temp_board = board
                             temp_board[r_start, c_start] = EMPTY
-                            temp_board[r_start+r, c_start+c] = piece
+                            temp_board[r_start-i, ] = piece
                             if not is_check(piece, player, temp_board):
                                 return False
                         else:
