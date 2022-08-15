@@ -50,675 +50,978 @@ FILES = 8
 
 
 def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
-    if player == PLAYER_1:
-        if r_start == RANKS - 2: # checking pawns in their starting position
-            if 0 < c_start < RANKS - 1:
-                if (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
-                (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start - 1) or
-                    (r_end == r_start - 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
-                (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
-                (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
-                (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start - 1) or
-                    (r_end == r_start - 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
-                (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
-                (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
-                (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    r_end == r_start - 1 and c_end == c_start
-                    ):
-                        return True
-                    else:
-                        return False
-                else:
-                    return False
-
-            elif c_start == RANKS - 1:
-                if (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start-1] == EMPTY and board[r_start-1, c_start-1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    r_end == r_start - 1 and c_end == c_start
-                    ):
-                        return True
-                    else:
-                        return False
-                else:
-                    return False
-            elif c_start == 0:
-                if (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] == EMPTY and
-                (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start) or
-                    (r_end == r_start - 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    (r_end == r_start - 1 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start-1, c_start] == EMPTY and
-                board[r_start-2, c_start] != EMPTY and
-                (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                ):
-                    if (
-                    r_end == r_start - 1 and c_end == c_start
-                    ):
-                        return True
-                    else:
-                        return False
-                else:
-                    return False
-
-        elif r_start != RANKS - 2: # checking all other pawn non-starting positions (except promotion square)
-            if r_start == 3 and prev_r_delta == 2 and prev_piece_moved == B_PAWN and (prev_c_end - 1 == c_start or prev_c_end + 1 == c_start): # en passant
+    try:
+        if player == PLAYER_1:
+            if r_start == RANKS - 2: # checking pawns in their starting position
                 if 0 < c_start < RANKS - 1:
-                    if prev_c_end - 1 == c_start:
+                    if (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
+                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start - 1) or
+                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
+                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
+                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
+                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start - 1) or
+                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
+                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
+                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
+                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        r_end == r_start - 1 and c_end == c_start
+                        ):
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                elif c_start == RANKS - 1:
+                    if (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        ):
+                            return True
+                        else:
+                            return False
+
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start-1] == EMPTY and board[r_start-1, c_start-1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        r_end == r_start - 1 and c_end == c_start
+                        ):
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+                elif c_start == 0:
+                    if (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] == EMPTY and
+                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 2 and c_end == c_start)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start) or
+                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        (r_end == r_start - 1 and c_end == c_start)
+                        ):
+                            return True
+                        else:
+                            return False
+                    elif (
+                    board[r_start-1, c_start] == EMPTY and
+                    board[r_start-2, c_start] != EMPTY and
+                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    ):
+                        if (
+                        r_end == r_start - 1 and c_end == c_start
+                        ):
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+            elif r_start != RANKS - 2: # checking all other pawn non-starting positions (except promotion square)
+                if r_start == 3 and prev_r_delta == 2 and prev_piece_moved == B_PAWN and (prev_c_end - 1 == c_start or prev_c_end + 1 == c_start): # en passant
+                    if 0 < c_start < RANKS - 1:
+                        if prev_c_end - 1 == c_start:
+                            if (
+                            board[r_start-1, c_start] == EMPTY and
+                            (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start) or
+                                (r_end == r_start - 1 and c_end == c_start - 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] == EMPTY and
+                            (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start) or
+                                (r_end == r_start - 1 and c_end == c_start - 1) or # en passant
+                                (r_end == r_start - 1 and c_end == c_start + 1)
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY and
+                            (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY and
+                            (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start - 1) or # en passant
+                                (r_end == r_start - 1 and c_end == c_start + 1)
+                                ):
+                                    return True
+                                else:
+                                    return False
+                        elif prev_c_end + 1 == c_start:
+                            if (
+                            board[r_start-1, c_start] == EMPTY and
+                            (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start) or
+                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] == EMPTY and
+                            (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start) or
+                                (r_end == r_start - 1 and c_end == c_start + 1) or # en passant
+                                (r_end == r_start - 1 and c_end == c_start - 1)
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY and
+                            (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start + 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY and
+                            (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start - 1) or
+                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                    elif c_start == RANKS - 1:
+                        if prev_c_end - 1 == c_start:
+                            if (
+                            board[r_start-1, c_start] == EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start) or
+                                (r_end == r_start - 1 and c_end == c_start - 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] == EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start) or
+                                (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                                board[r_start-1, c_start] != EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start - 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                    elif c_start == 0:
+                        if prev_c_end + 1 == c_start:
+                            if (
+                            board[r_start-1, c_start] == EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start) or
+                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] == EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start) or
+                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start + 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                else: # checking all but promotion square (en passant not possible)
+                    if 0 < c_start < RANKS - 1:
                         if (
                         board[r_start-1, c_start] == EMPTY and
-                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                        ):
-                            if (
-                            (r_end == r_start - 1 and c_end == c_start) or
-                            (r_end == r_start - 1 and c_end == c_start - 1) # en passant
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif (
-                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
                         (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
                         ):
                             if (
                             (r_end == r_start - 1 and c_end == c_start) or
-                            (r_end == r_start - 1 and c_end == c_start - 1) or # en passant
+                            (r_end == r_start - 1 and c_end == c_start - 1) or
+                            (r_end == r_start - 1 and c_end == c_start + 1)
+                            ):
+                                return True
+                            else:
+                                return False
+
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
+                        (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start) or
                             (r_end == r_start - 1 and c_end == c_start + 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start-1, c_start] != EMPTY and
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
                         (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
                         ):
                             if (
-                            (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif (
-                        board[r_start-1, c_start] != EMPTY and
-                        (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                        ):
-                            if (
-                            (r_end == r_start - 1 and c_end == c_start - 1) or # en passant
-                            (r_end == r_start - 1 and c_end == c_start + 1)
-                            ):
-                                return True
-                            else:
-                                return False
-                    elif prev_c_end + 1 == c_start:
-                        if (
-                        board[r_start-1, c_start] == EMPTY and
-                        (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                        ):
-                            if (
                             (r_end == r_start - 1 and c_end == c_start) or
-                            (r_end == r_start - 1 and c_end == c_start + 1) # en passant
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif (
-                        board[r_start-1, c_start] == EMPTY and
-                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                        ):
-                            if (
-                            (r_end == r_start - 1 and c_end == c_start) or
-                            (r_end == r_start - 1 and c_end == c_start + 1) or # en passant
                             (r_end == r_start - 1 and c_end == c_start - 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start-1, c_start] != EMPTY and
-                        (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
+                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
                         ):
                             if (
-                            (r_end == r_start - 1 and c_end == c_start + 1)  # en passant
+                            (r_end == r_start - 1 and c_end == c_start)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start-1, c_start] != EMPTY and
-                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
+                        (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
                         ):
                             if (
+                            (r_end == r_start - 1 and c_end == c_start) or
                             (r_end == r_start - 1 and c_end == c_start - 1) or
-                            (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                            (r_end == r_start - 1 and c_end == c_start + 1)
                             ):
                                 return True
                             else:
                                 return False
-                elif c_start == RANKS - 1:
-                    if prev_c_end - 1 == c_start:
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
+                        (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start + 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
+                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start - 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] == EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
+                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            r_end == r_start - 1 and c_end == c_start
+                            ):
+                                return True
+                            else:
+                                return False
+                        else:
+                            return False
+                    elif c_start == RANKS - 1:
                         if (
-                        board[r_start-1, c_start] == EMPTY
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
                         ):
                             if (
                             (r_end == r_start - 1 and c_end == c_start) or
-                            (r_end == r_start - 1 and c_end == c_start - 1) # en passant
+                            (r_end == r_start - 1 and c_end == c_start - 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start-1, c_start] == EMPTY
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
                         ):
                             if (
                             (r_end == r_start - 1 and c_end == c_start) or
-                            (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
+                            (r_end == r_start - 1 and c_end == c_start - 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start-1, c_start] != EMPTY
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
                         ):
                             if (
-                            (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
+                            (r_end == r_start - 1 and c_end == c_start)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                            board[r_start-1, c_start] != EMPTY
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
                         ):
                             if (
-                            (r_end == r_start - 1 and c_end == c_start - 1) # en passant
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start - 1)
                             ):
                                 return True
                             else:
                                 return False
-                elif c_start == 0:
-                    if prev_c_end + 1 == c_start:
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start - 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start-1] == EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            r_end == r_start - 1 and c_end == c_start
+                            ):
+                                return True
+                            else:
+                                return False
+                        else:
+                            return False
+                    elif c_start == 0:
                         if (
-                        board[r_start-1, c_start] == EMPTY
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
                         ):
                             if (
                             (r_end == r_start - 1 and c_end == c_start) or
-                            (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                            (r_end == r_start - 1 and c_end == c_start + 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start-1, c_start] == EMPTY
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
                         ):
                             if (
                             (r_end == r_start - 1 and c_end == c_start) or
-                            (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                            (r_end == r_start - 1 and c_end == c_start + 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start-1, c_start] != EMPTY
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
                         ):
-                            if (
-                            (r_end == r_start - 1 and c_end == c_start + 1)  # en passant
+                            if(
+                            (r_end == r_start - 1 and c_end == c_start)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start-1, c_start] != EMPTY
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
                         ):
                             if (
-                            (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                            (r_end == r_start - 1 and c_end == c_start)
                             ):
                                 return True
                             else:
                                 return False
-            else: # checking all but promotion square (en passant not possible)
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start + 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start) or
+                            (r_end == r_start - 1 and c_end == c_start + 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start-1, c_start] == EMPTY and
+                        (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                        ):
+                            if (
+                            r_end == r_start - 1 and c_end == c_start
+                            ):
+                                return True
+                            else:
+                                return False
+                        else:
+                            return False
+
+        elif player == PLAYER_2:
+            if r_start == 1: # checking pawns in their starting position
                 if 0 < c_start < RANKS - 1:
                     if (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
-                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
+                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start - 1) or
-                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start - 1) or
+                        (r_end == r_start + 1 and c_end == c_start + 1)
                         ):
                             return True
                         else:
                             return False
 
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
-                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
+                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start + 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
-                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
+                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start - 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
-                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
-                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
+                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start - 1) or
-                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start - 1) or
+                        (r_end == r_start + 1 and c_end == c_start + 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values())) and
-                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
+                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start + 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
-                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
+                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start - 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] == EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values())) and
-                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
+                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        r_end == r_start - 1 and c_end == c_start
+                        r_end == r_start + 1 and c_end == c_start
                         ):
                             return True
                         else:
                             return False
                     else:
                         return False
+
                 elif c_start == RANKS - 1:
                     if (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start - 1)
+                        ):
+                            return True
+                        else:
+                            return False
+
+                    elif (
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start-1] == EMPTY and board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
+                    ):
+                        if (
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start - 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start - 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start - 1)
+                        (r_end == r_start + 1 and c_end == c_start)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start - 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start - 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start-1] == EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
-                    ):
-                        if (
-                        r_end == r_start - 1 and c_end == c_start
+                        r_end == r_start + 1 and c_end == c_start
                         ):
                             return True
                         else:
@@ -727,85 +1030,97 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                         return False
                 elif c_start == 0:
                     if (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start + 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start + 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                     ):
-                        if(
-                        (r_end == r_start - 1 and c_end == c_start)
+                        if (
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] == EMPTY and
+                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 2 and c_end == c_start)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start + 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start) or
-                        (r_end == r_start - 1 and c_end == c_start + 1)
+                        (r_end == r_start + 1 and c_end == c_start) or
+                        (r_end == r_start + 1 and c_end == c_start + 1)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        (r_end == r_start - 1 and c_end == c_start)
+                        (r_end == r_start + 1 and c_end == c_start)
                         ):
                             return True
                         else:
                             return False
                     elif (
-                    board[r_start-1, c_start] == EMPTY and
-                    (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                    board[r_start+1, c_start] == EMPTY and
+                    board[r_start+2, c_start] != EMPTY and
+                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                     ):
                         if (
-                        r_end == r_start - 1 and c_end == c_start
+                        r_end == r_start + 1 and c_end == c_start
                         ):
                             return True
                         else:
@@ -813,732 +1128,420 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                     else:
                         return False
 
-    elif player == PLAYER_2:
-        if r_start == 1: # checking pawns in their starting position
-            if 0 < c_start < RANKS - 1:
-                if (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
-                (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start - 1) or
-                    (r_end == r_start + 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
-                (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
-                (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
-                (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start - 1) or
-                    (r_end == r_start + 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
-                (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
-                (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
-                (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    r_end == r_start + 1 and c_end == c_start
-                    ):
-                        return True
-                    else:
-                        return False
-                else:
-                    return False
-
-            elif c_start == RANKS - 1:
-                if (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start-1] == EMPTY and board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start - 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    r_end == r_start + 1 and c_end == c_start
-                    ):
-                        return True
-                    else:
-                        return False
-                else:
-                    return False
-            elif c_start == 0:
-                if (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] == EMPTY and
-                (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 2 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start) or
-                    (r_end == r_start + 1 and c_end == c_start + 1)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    (r_end == r_start + 1 and c_end == c_start)
-                    ):
-                        return True
-                    else:
-                        return False
-                elif (
-                board[r_start+1, c_start] == EMPTY and
-                board[r_start+2, c_start] != EMPTY and
-                (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                ):
-                    if (
-                    r_end == r_start + 1 and c_end == c_start
-                    ):
-                        return True
-                    else:
-                        return False
-                else:
-                    return False
-
-        elif r_start != 1: # checking all other pawn non-starting positions (except promotion square)
-            if r_start == 4 and prev_r_delta == 2 and prev_piece_moved == W_PAWN and (prev_c_end - 1 == c_start or prev_c_end + 1 == c_start): # en passant
-                if 0 < c_start < RANKS - 1:
-                    if prev_c_end - 1 == c_start:
-                        if (
-                        board[r_start+1, c_start] == EMPTY and
-                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                        ):
+            elif r_start != 1: # checking all other pawn non-starting positions (except promotion square)
+                if r_start == 4 and prev_r_delta == 2 and prev_piece_moved == W_PAWN and (prev_c_end - 1 == c_start or prev_c_end + 1 == c_start): # en passant
+                    if 0 < c_start < RANKS - 1:
+                        if prev_c_end - 1 == c_start:
                             if (
-                            (r_end == r_start + 1 and c_end == c_start) or
-                            (r_end == r_start + 1 and c_end == c_start - 1) # en passant
+                            board[r_start+1, c_start] == EMPTY and
+                            (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                             ):
-                                return True
-                            else:
-                                return False
-                        elif (
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start) or
+                                (r_end == r_start + 1 and c_end == c_start - 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] == EMPTY and
+                            (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start) or
+                                (r_end == r_start + 1 and c_end == c_start - 1) or # en passant
+                                (r_end == r_start + 1 and c_end == c_start + 1)
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] != EMPTY and
+                            (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start - 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] != EMPTY and
+                            (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start - 1) or # en passant
+                                (r_end == r_start + 1 and c_end == c_start + 1)
+                                ):
+                                    return True
+                                else:
+                                    return False
+                        elif prev_c_end + 1 == c_start:
+                            if (
+                            board[r_start+1, c_start] == EMPTY and
+                            (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start) or
+                                (r_end == r_start + 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] == EMPTY and
+                            (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start) or
+                                (r_end == r_start + 1 and c_end == c_start + 1) or # en passant
+                                (r_end == r_start + 1 and c_end == c_start - 1)
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] != EMPTY and
+                            (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start + 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] != EMPTY and
+                            (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start - 1) or
+                                (r_end == r_start + 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                    elif c_start == RANKS - 1:
+                        if prev_c_end - 1 == c_start:
+                            if (
+                            board[r_start+1, c_start] == EMPTY
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start) or
+                                (r_end == r_start + 1 and c_end == c_start - 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] != EMPTY
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start - 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                    elif c_start == 0:
+                        if prev_c_end + 1 == c_start:
+                            if (
+                            board[r_start+1, c_start] == EMPTY
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start) or
+                                (r_end == r_start + 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] != EMPTY
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start + 1)  # en passant
+                                ):
+                                    return True
+                                else:
+                                    return False
+                else: # checking all but promotion square (en passant not possible)
+                    if 0 < c_start < RANKS - 1:
+                        if (
                         board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
                         (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                         ):
                             if (
                             (r_end == r_start + 1 and c_end == c_start) or
-                            (r_end == r_start + 1 and c_end == c_start - 1) or # en passant
+                            (r_end == r_start + 1 and c_end == c_start - 1) or
+                            (r_end == r_start + 1 and c_end == c_start + 1)
+                            ):
+                                return True
+                            else:
+                                return False
+
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
+                        (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start) or
                             (r_end == r_start + 1 and c_end == c_start + 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start+1, c_start] != EMPTY and
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
                         (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                         ):
                             if (
-                            (r_end == r_start + 1 and c_end == c_start - 1)  # en passant
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif (
-                        board[r_start+1, c_start] != EMPTY and
-                        (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                        ):
-                            if (
-                            (r_end == r_start + 1 and c_end == c_start - 1) or # en passant
-                            (r_end == r_start + 1 and c_end == c_start + 1)
-                            ):
-                                return True
-                            else:
-                                return False
-                    elif prev_c_end + 1 == c_start:
-                        if (
-                        board[r_start+1, c_start] == EMPTY and
-                        (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                        ):
-                            if (
                             (r_end == r_start + 1 and c_end == c_start) or
-                            (r_end == r_start + 1 and c_end == c_start + 1) # en passant
-                            ):
-                                return True
-                            else:
-                                return False
-                        elif (
-                        board[r_start+1, c_start] == EMPTY and
-                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                        ):
-                            if (
-                            (r_end == r_start + 1 and c_end == c_start) or
-                            (r_end == r_start + 1 and c_end == c_start + 1) or # en passant
                             (r_end == r_start + 1 and c_end == c_start - 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start+1, c_start] != EMPTY and
-                        (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
+                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                         ):
                             if (
-                            (r_end == r_start + 1 and c_end == c_start + 1)  # en passant
+                            (r_end == r_start + 1 and c_end == c_start)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start+1, c_start] != EMPTY and
-                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
+                        (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                         ):
                             if (
+                            (r_end == r_start + 1 and c_end == c_start) or
                             (r_end == r_start + 1 and c_end == c_start - 1) or
-                            (r_end == r_start + 1 and c_end == c_start + 1) # en passant
-                            ):
-                                return True
-                            else:
-                                return False
-                elif c_start == RANKS - 1:
-                    if prev_c_end - 1 == c_start:
-                        if (
-                        board[r_start+1, c_start] == EMPTY
-                        ):
-                            if (
-                            (r_end == r_start + 1 and c_end == c_start) or
-                            (r_end == r_start + 1 and c_end == c_start - 1) # en passant
+                            (r_end == r_start + 1 and c_end == c_start + 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start+1, c_start] != EMPTY
-                        ):
-                            if (
-                            (r_end == r_start + 1 and c_end == c_start - 1)  # en passant
-                            ):
-                                return True
-                            else:
-                                return False
-                elif c_start == 0:
-                    if prev_c_end + 1 == c_start:
-                        if (
-                        board[r_start+1, c_start] == EMPTY
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
+                        (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                         ):
                             if (
                             (r_end == r_start + 1 and c_end == c_start) or
-                            (r_end == r_start + 1 and c_end == c_start + 1) # en passant
+                            (r_end == r_start + 1 and c_end == c_start + 1)
                             ):
                                 return True
                             else:
                                 return False
                         elif (
-                        board[r_start+1, c_start] != EMPTY
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
+                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                         ):
                             if (
-                            (r_end == r_start + 1 and c_end == c_start + 1)  # en passant
+                            (r_end == r_start + 1 and c_end == c_start) or
+                            (r_end == r_start + 1 and c_end == c_start - 1)
                             ):
                                 return True
                             else:
                                 return False
-            else: # checking all but promotion square (en passant not possible)
-                if 0 < c_start < RANKS - 1:
-                    if (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
-                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start - 1) or
-                        (r_end == r_start + 1 and c_end == c_start + 1)
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] == EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
+                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                         ):
-                            return True
+                            if (
+                            r_end == r_start + 1 and c_end == c_start
+                            ):
+                                return True
+                            else:
+                                return False
                         else:
                             return False
+                    elif c_start == RANKS - 1:
+                        if (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start) or
+                            (r_end == r_start + 1 and c_end == c_start - 1)
+                            ):
+                                return True
+                            else:
+                                return False
 
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
-                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start + 1)
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
                         ):
-                            return True
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start) or
+                            (r_end == r_start + 1 and c_end == c_start - 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start) or
+                            (r_end == r_start + 1 and c_end == c_start - 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start) or
+                            (r_end == r_start + 1 and c_end == c_start - 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start-1] == EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            r_end == r_start + 1 and c_end == c_start
+                            ):
+                                return True
+                            else:
+                                return False
                         else:
                             return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
-                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                    ):
+                    elif c_start == 0:
                         if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start - 1)
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                         ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
-                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
-                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start - 1) or
-                        (r_end == r_start + 1 and c_end == c_start + 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values())) and
-                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start + 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
-                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start - 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] == EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values())) and
-                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        r_end == r_start + 1 and c_end == c_start
-                        ):
-                            return True
-                        else:
-                            return False
-                    else:
-                        return False
-                elif c_start == RANKS - 1:
-                    if (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start - 1)
-                        ):
-                            return True
-                        else:
-                            return False
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start) or
+                            (r_end == r_start + 1 and c_end == c_start + 1)
+                            ):
+                                return True
+                            else:
+                                return False
 
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start)
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                         ):
-                            return True
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start) or
+                            (r_end == r_start + 1 and c_end == c_start + 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start) or
+                            (r_end == r_start + 1 and c_end == c_start + 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start + 1 and c_end == c_start) or
+                            (r_end == r_start + 1 and c_end == c_start + 1)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
+                        board[r_start+1, c_start] == EMPTY and
+                        (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
+                        ):
+                            if (
+                            r_end == r_start + 1 and c_end == c_start
+                            ):
+                                return True
+                            else:
+                                return False
                         else:
                             return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start - 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start - 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start - 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start-1] == EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        r_end == r_start + 1 and c_end == c_start
-                        ):
-                            return True
-                        else:
-                            return False
-                    else:
-                        return False
-                elif c_start == 0:
-                    if (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start + 1)
-                        ):
-                            return True
-                        else:
-                            return False
-
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start + 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start + 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start + 1 and c_end == c_start) or
-                        (r_end == r_start + 1 and c_end == c_start + 1)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        (r_end == r_start - 1 and c_end == c_start)
-                        ):
-                            return True
-                        else:
-                            return False
-                    elif (
-                    board[r_start+1, c_start] == EMPTY and
-                    (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                    ):
-                        if (
-                        r_end == r_start + 1 and c_end == c_start
-                        ):
-                            return True
-                        else:
-                            return False
-                    else:
-                        return False
+    except IndexError:
+        return False
 
 def is_valid_knight_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
     if player == PLAYER_1:

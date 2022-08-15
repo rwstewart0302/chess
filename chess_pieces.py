@@ -63,6 +63,7 @@ class Pawn:
         self.c_start = None
         self.r_end = None
         self.c_end = None
+        self.temp_board = None
 
 
     def move(self, r_start, c_start, r_end, c_end):
@@ -70,15 +71,18 @@ class Pawn:
         self.c_start = c_start
         self.r_end = r_end
         self.c_end = c_end
+
+        self.temp_board = self.board
+
         if self.piece == W_PAWN or self.piece == B_PAWN:
 
             print('test: ', pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece))
 
             if pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
-                self.board[self.r_start, self.c_start] = EMPTY
+                self.temp_board[self.r_start, self.c_start] = EMPTY
 
                 if self.player == PLAYER_1 and self.r_end == 0: # pawn promotion
-                    promotion_piece = eval(input("1 ---> Queen \n 2 ---> Rook \n 3 ---> Bishop \n 4 ---> Knight"))
+                    promotion_piece = eval(input("1 ---> Queen \n 2 ---> Rook \n 3 ---> Bishop \n 4 ---> Knight \n: "))
                     if promotion_piece == 1:
                         self.piece = W_QUEEN
                     elif promotion_piece == 2:
@@ -88,7 +92,7 @@ class Pawn:
                     elif promotion_piece == 4:
                         self.piece = W_KNIGHT
                 elif self.player == PLAYER_2 and self.r_end == 7: # pawn promotion
-                    promotion_piece = eval(input("1 ---> Queen \n 2 ---> Rook \n 3 ---> Bishop \n 4 ---> Knight"))
+                    promotion_piece = eval(input("1 ---> Queen \n 2 ---> Rook \n 3 ---> Bishop \n 4 ---> Knight \n: "))
                     if promotion_piece == 1:
                         self.piece = B_QUEEN
                     elif promotion_piece == 2:
@@ -100,8 +104,14 @@ class Pawn:
                 else:
                     pass
 
-                self.board[self.r_end, self.c_end] = self.piece
-                return self.board, True
+                self.temp_board[self.r_end, self.c_end] = self.piece
+
+                if check.is_check(self.piece, self.player, self.temp_board):
+                    return self.board, False
+
+                elif not check.is_check(self.piece, self.player, self.temp_board):
+                    self.board = self.temp_board
+                    return self.board, True
             else:
                 return self.board, False
 

@@ -46,8 +46,6 @@ B_KING = PIECES['Black']['KING']
 
 EMPTY = PIECES['EMPTY']
 
-turn_counter = -1
-
 def create_board():
     board = np.full((RANKS, FILES), EMPTY)
     for n_row in range(RANKS):
@@ -104,49 +102,60 @@ def main():
 
         while True: # continue asking for player's piece selection and movement until their choice is valid
             piece_loc = eval(input('Select a row and column: (piece selection) '))
-            piece_move_to = eval(input('Select a row and column: (move selection) '))
+            try:
+                r_start = piece_loc[0]
+                c_start = piece_loc[1]
+                starting_piece = board[r_start, c_start]
+                piece_selection_error = 0
+                print('starting piece: ', starting_piece)
+            except IndexError:
+                piece_selection_error = 1
+                print('select a valid piece!')
 
-            r_start = piece_loc[0]
-            c_start = piece_loc[1]
-            starting_piece = board[r_start, c_start]
+            if piece_selection_error == 0:
+                piece_move_to = eval(input('Select a row and column: (move selection) '))
+                try:
+                    r_end = piece_move_to[0]
+                    c_end = piece_move_to[1]
+                    piece_move_error = 0
+                    print('square to move to: ', board[r_end, c_end])
+                except IndexError:
+                    piece_move_error = 1
+                    print('select a valid move!')
 
-            print('starting piece: ', starting_piece)
+            if piece_move_error == 0:
+                if turn_counter == 0: # creating initial values for previous moved pieces to check for en passant
+                    prev_r_delta=0
+                    prev_c_end=np.nan
+                    prev_moved_piece=EMPTY
+                else:
+                    pass
 
-            r_end = piece_move_to[0]
-            c_end = piece_move_to[1]
+                # instiatiating the class for the piece selected
+                if board[r_start, c_start] == PIECES[player]['PAWN']:
+                    piece_move = cp.Pawn(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                elif board[r_start, c_start] == PIECES[player]['KNIGHT']:
+                    piece_move = cp.Knight(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                elif board[r_start, c_start] == PIECES[player]['BISHOP']:
+                    piece_move = cp.Bishop(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                elif board[r_start, c_start] == PIECES[player]['ROOK']:
+                    piece_move = cp.Rook(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                elif board[r_start, c_start] == PIECES[player]['QUEEN']:
+                    piece_move = cp.Queen(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                elif board[r_start, c_start] == PIECES[player]['KING']:
+                    piece_move = cp.King(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
 
-            print('square to move to: ', board[r_end, c_end])
+                board, move_check = piece_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
 
-            if turn_counter == 0: # creating initial values for previous moved pieces to check for en passant
-                prev_r_delta=0
-                prev_c_end=np.nan
-                prev_moved_piece=EMPTY
+                if move_check: # if the move is valid then go to the next player
+                    prev_r_delta = abs(r_end - r_start)
+                    prev_c_end = c_end
+                    prev_moved_piece = starting_piece
+                    turn_counter += 1
+                    break
+                elif not move_check: # if the move is not valid then ask for a move from the next player
+                    pass
             else:
-                pass
-
-            # instiatiating the class for the piece selected
-            if board[r_start, c_start] == PIECES[player]['PAWN']:
-                piece_move = cp.Pawn(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
-            elif board[r_start, c_start] == PIECES[player]['KNIGHT']:
-                piece_move = cp.Knight(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
-            elif board[r_start, c_start] == PIECES[player]['BISHOP']:
-                piece_move = cp.Bishop(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
-            elif board[r_start, c_start] == PIECES[player]['ROOK']:
-                piece_move = cp.Rook(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
-            elif board[r_start, c_start] == PIECES[player]['QUEEN']:
-                piece_move = cp.Queen(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
-            elif board[r_start, c_start] == PIECES[player]['KING']:
-                piece_move = cp.King(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
-
-            board, move_check = piece_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
-
-            if move_check: # if the move is valid then go to the next player
-                prev_r_delta = abs(r_end - r_start)
-                prev_c_end = c_end
-                prev_moved_piece = starting_piece
-                turn_counter += 1
-                break
-            elif not move_check: # if the move is not valid then ask for another move
                 pass
 
 if __name__ == '__main__':
