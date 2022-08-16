@@ -80,6 +80,7 @@ class Pawn:
             self.temp_board[self.r_start, self.prev_c_end] = EMPTY
             self.temp_board[self.r_end, self.c_end] = self.piece
 
+            print('test check: ', check.is_check(self.player, self.temp_board))
             if check.is_check(self.player, self.temp_board):
                 print(f'not a valid move {self.player} is in check!')
                 return self.board, False
@@ -89,9 +90,7 @@ class Pawn:
                 return self.board, True
 
         elif pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
-            print('test')
             self.temp_board[self.r_start, self.c_start] = EMPTY
-
             if self.player == PLAYER_1 and self.r_end == 0: # pawn promotion
                 promotion_piece = eval(input("1 ---> Queen \n 2 ---> Rook \n 3 ---> Bishop \n 4 ---> Knight \n: "))
                 if promotion_piece == 1:
@@ -116,7 +115,6 @@ class Pawn:
                 pass
 
             self.temp_board[self.r_end, self.c_end] = self.piece
-
             if check.is_check(self.player, self.temp_board):
                 print(f'not a valid move {self.player} is in check!')
                 return self.board, False

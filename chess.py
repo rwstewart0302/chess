@@ -98,7 +98,7 @@ def main():
         elif turn_counter % 2 != 0:
             player = 'Black'
 
-        if check.is_checkmate(player, board):
+        print('checkmate? ', check.is_checkmate(player, board))
             if player == 'White':
                 winning_player = 'Black'
             elif player == 'Black':
@@ -160,8 +160,6 @@ def main():
                     piece_move = cp.Queen(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
                 elif board[r_start, c_start] == PIECES[player]['KING']:
                     piece_move = cp.King(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
-
-
 
                 board, move_check = piece_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
 
