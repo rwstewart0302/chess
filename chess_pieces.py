@@ -104,6 +104,7 @@ class Pawn:
             self.temp_board[self.r_end, self.c_end] = self.piece
 
             if check.is_check(self.player, self.temp_board):
+                print(f'not a valid move {self.player} is in check!')
                 return self.board, False
 
             elif not check.is_check(self.player, self.temp_board):
@@ -141,6 +142,7 @@ class Rook:
             self.temp_board[self.r_end, self.c_end] = self.piece
 
             if check.is_check(self.player, self.temp_board):
+                print(f'not a valid move {self.player} is in check!')
                 return self.board, False
 
             elif not check.is_check(self.player, self.temp_board):
@@ -181,6 +183,7 @@ class Knight:
 
             # should check for checks in the main function as well!!!
             if check.is_check(self.player, self.temp_board):
+                print(f'not a valid move {self.player} is in check!')
                 return self.board, False
 
             elif not check.is_check(self.player, self.temp_board):
