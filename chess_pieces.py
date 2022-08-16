@@ -75,7 +75,21 @@ class Pawn:
 
         print('test: ', pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece))
 
-        if pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
+        if pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece) == 'en passant':
+            self.temp_board[self.r_start, self.c_start] = EMPTY
+            self.temp_board[self.r_start, self.prev_c_end] = EMPTY
+            self.temp_board[self.r_end, self.c_end] = self.piece
+
+            if check.is_check(self.player, self.temp_board):
+                print(f'not a valid move {self.player} is in check!')
+                return self.board, False
+
+            elif not check.is_check(self.player, self.temp_board):
+                self.board = self.temp_board
+                return self.board, True
+
+        elif pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
+            print('test')
             self.temp_board[self.r_start, self.c_start] = EMPTY
 
             if self.player == PLAYER_1 and self.r_end == 0: # pawn promotion
@@ -110,6 +124,7 @@ class Pawn:
             elif not check.is_check(self.player, self.temp_board):
                 self.board = self.temp_board
                 return self.board, True
+
         else:
             return self.board, False
 

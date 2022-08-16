@@ -85,6 +85,7 @@ def create_board():
 ### - CLEANOUT ALL PRINTS AND INPUTS WHEN PYGAME IS IMPLEMENTED
 ### - CREATE GLOBAL JSON FILE FOR PIECE STRING VALUES
 ### - ADD SOME PRINT STATEMENTS FOR INVALID PIECE SELECTIONS
+### - CHECK FOR CHECK IN MAIN FUNCTION!!!
 
 def main():
     player = 'White'
@@ -112,17 +113,23 @@ def main():
 
         while True: # continue asking for player's piece selection and movement until their choice is valid
             piece_loc = eval(input('Select a row and column: (piece selection) '))
+            valid_piece = 1
+            piece_move_error = 1
             try:
                 r_start = piece_loc[0]
                 c_start = piece_loc[1]
                 starting_piece = board[r_start, c_start]
                 piece_selection_error = 0
                 print('starting piece: ', starting_piece)
+                if starting_piece in list(PIECES[player].values()):
+                    valid_piece = 0
+                else:
+                    print('invalid piece selected!')
             except IndexError:
                 piece_selection_error = 1
                 print('select a valid piece!')
 
-            if piece_selection_error == 0:
+            if piece_selection_error == 0 and valid_piece == 0:
                 piece_move_to = eval(input('Select a row and column: (move selection) '))
                 try:
                     r_end = piece_move_to[0]
@@ -130,7 +137,6 @@ def main():
                     piece_move_error = 0
                     print('square to move to: ', board[r_end, c_end])
                 except IndexError:
-                    piece_move_error = 1
                     print('select a valid move!')
 
             if piece_move_error == 0:
@@ -154,6 +160,8 @@ def main():
                     piece_move = cp.Queen(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
                 elif board[r_start, c_start] == PIECES[player]['KING']:
                     piece_move = cp.King(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+
+
 
                 board, move_check = piece_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
 
