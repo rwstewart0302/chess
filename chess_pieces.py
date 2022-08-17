@@ -112,6 +112,8 @@ class Pawn:
                 pass
 
             self.temp_board[self.r_end, self.c_end] = self.piece
+            print('test check: ', check.is_check(self.player, self.temp_board))
+
             if check.is_check(self.player, self.temp_board):
                 print(f'not a valid move {self.player} is in check!')
                 return self.board, False
@@ -220,9 +222,12 @@ class Bishop:
             self.r_end = r_end
             self.c_end = c_end
 
+            print('test: ', pm.is_valid_bishop_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board))
             if pm.is_valid_bishop_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board):
                 self.temp_board[self.r_start, self.c_start] = EMPTY
                 self.temp_board[self.r_end, self.c_end] = self.piece
+
+                print('test check: ', check.is_check(self.player, self.temp_board))
 
                 if check.is_check(self.player, self.temp_board):
                     print(f'not a valid move {self.player} is in check!')
@@ -236,14 +241,11 @@ class Bishop:
 
 
 class Queen:
-    def __init__(board, player, turn, prev_r_delta, prev_c_end, prev_moved_piece):
-        self.queen = 9
+    def __init__(self, board, player):
+        self.rook = 9
         self.board = board
-        self.turn = turn
+        self.temp_board = board.copy()
         self.player = player
-        self.prev_r_delta = prev_r_delta
-        self.prev_c_end = prev_c_end
-        self.prev_moved_piece = prev_moved_piece
         if self.player == PLAYER_1:
             self.piece = W_QUEEN
         elif self.player == PLAYER_2:
@@ -259,21 +261,30 @@ class Queen:
         self.c_start = c_start
         self.r_end = r_end
         self.c_end = c_end
-        if self.piece == W_QUEEN or self.piece == B_QUEEN:
-            if pm.is_valid_queen_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
-                self.board[self.r_start, self.c_start] = EMPTY
-                self.board[self.r_end, self.c_end] = self.piece
-        return self.board
+
+        print('test: ', pm.is_valid_queen_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board))
+        if pm.is_valid_queen_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board):
+            self.temp_board[self.r_start, self.c_start] = EMPTY
+            self.temp_board[self.r_end, self.c_end] = self.piece
+
+            print('test check: ', check.is_check(self.player, self.temp_board))
+
+            if check.is_check(self.player, self.temp_board):
+                print(f'not a valid move {self.player} is in check!')
+                return self.board, False
+
+            elif not check.is_check(self.player, self.temp_board):
+                self.board = self.temp_board
+                return self.board, True
+        else:
+            return self.board, False
 
 class King:
-    def __init__(board, player, turn, prev_r_delta, prev_c_end, prev_moved_piece):
-        self.queen = 1_000_000
+    def __init__(self, board, player):
+        self.rook = 1_000_000
         self.board = board
-        self.turn = turn
+        self.temp_board = board.copy()
         self.player = player
-        self.prev_r_delta = prev_r_delta
-        self.prev_c_end = prev_c_end
-        self.prev_moved_piece = prev_moved_piece
         if self.player == PLAYER_1:
             self.piece = W_KING
         elif self.player == PLAYER_2:
@@ -289,8 +300,20 @@ class King:
         self.c_start = c_start
         self.r_end = r_end
         self.c_end = c_end
-        if self.piece == W_KING or self.piece == B_KING:
-            if pm.is_valid_king_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
-                self.board[self.r_start, self.c_start] = EMPTY
-                self.board[self.r_end, self.c_end] = self.piece
-        return self.board
+
+        print('test: ', pm.is_valid_king_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board))
+        if pm.is_valid_king_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board):
+            self.temp_board[self.r_start, self.c_start] = EMPTY
+            self.temp_board[self.r_end, self.c_end] = self.piece
+
+            print('test check: ', check.is_check(self.player, self.temp_board))
+
+            if check.is_check(self.player, self.temp_board):
+                print(f'not a valid move {self.player} is in check!')
+                return self.board, False
+
+            elif not check.is_check(self.player, self.temp_board):
+                self.board = self.temp_board
+                return self.board, True
+        else:
+            return self.board, False

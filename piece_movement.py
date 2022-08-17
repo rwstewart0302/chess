@@ -43,12 +43,8 @@ RANKS = 8
 FILES = 8
 
 ### TODO
-### - FIX ALL SYNTAX ERRORS IN IF STATEMENTS ###
-### - CHANGE r_start - 1 to r_start + 1 for player_2
-### - CHANGE PIECES['White'] to PIECES['Black'] for player_2
-### - ADD CHECK AND CHECKMATE CONDITIONS using check.is_check() and check.is_checkmate() to player_1 and player_2
-
 ### - MIGHT BE ABLE TO SIMPLIFY PAWN MOVEMENT BECAUSE OF TRY/EXCEPT...TRY CUTTING DOWN ON CONDITIONALS
+
 def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
     try:
         if player == PLAYER_1:
@@ -410,66 +406,10 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
             elif r_start != RANKS - 2: # checking all other pawn non-starting positions (except promotion square)
                 if r_start == 3 and prev_r_delta == 2 and prev_moved_piece == B_PAWN and (prev_c_end - 1 == c_start or prev_c_end + 1 == c_start): # en passant
                     if 0 < c_start < RANKS - 1:
-                        if prev_c_end - 1 == c_start:
+                        if prev_c_end + 1 == c_start:
                             if (
                             board[r_start-1, c_start] == EMPTY and
                             (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                            ):
-                                if (
-                                (r_end == r_start - 1 and c_end == c_start)
-                                ):
-                                    return True
-                                elif (
-                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
-                                ):
-                                    return 'en passant'
-                                else:
-                                    return False
-                            elif (
-                            board[r_start-1, c_start] == EMPTY and
-                            (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                            ):
-                                if (
-                                (r_end == r_start - 1 and c_end == c_start) or
-                                (r_end == r_start - 1 and c_end == c_start - 1)
-                                ):
-                                    return True
-                                elif (
-                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
-                                ):
-                                    return 'en passant'
-                                else:
-                                    return False
-                            elif (
-                            board[r_start-1, c_start] != EMPTY and
-                            (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
-                            ):
-                                if (
-                                (r_end == r_start - 1 and c_end == c_start + 1)  # en passant
-                                ):
-                                    return 'en passant'
-                                else:
-                                    return False
-                            elif (
-                            board[r_start-1, c_start] != EMPTY and
-                            (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
-                            ):
-                                if (
-                                (r_end == r_start - 1 and c_end == c_start - 1)
-                                ):
-                                    return True
-                                elif (
-                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
-                                ):
-                                    return 'en passant'
-                                else:
-                                    return False
-                            else:
-                                return False
-                        elif prev_c_end + 1 == c_start:
-                            if (
-                            board[r_start-1, c_start] == EMPTY and
-                            (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
                             ):
                                 if (
                                 (r_end == r_start - 1 and c_end == c_start)
@@ -483,7 +423,7 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return False
                             elif (
                             board[r_start-1, c_start] == EMPTY and
-                            (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                            (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
                             ):
                                 if (
                                 (r_end == r_start - 1 and c_end == c_start) or
@@ -498,7 +438,7 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return False
                             elif (
                             board[r_start-1, c_start] != EMPTY and
-                            (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
+                            (board[r_start-1, c_start+1] == EMPTY or board[r_start-1, c_start+1] in list(PIECES['White'].values()))
                             ):
                                 if (
                                 (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
@@ -508,7 +448,7 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return False
                             elif (
                             board[r_start-1, c_start] != EMPTY and
-                            (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
+                            (board[r_start-1, c_start+1] != EMPTY and board[r_start-1, c_start+1] not in list(PIECES['White'].values()))
                             ):
                                 if (
                                 (r_end == r_start - 1 and c_end == c_start + 1)
@@ -522,10 +462,10 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return False
                             else:
                                 return False
-                    elif c_start == RANKS - 1:
-                        if prev_c_end - 1 == c_start:
+                        elif prev_c_end - 1 == c_start:
                             if (
-                            board[r_start-1, c_start] == EMPTY
+                            board[r_start-1, c_start] == EMPTY and
+                            (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
                             ):
                                 if (
                                 (r_end == r_start - 1 and c_end == c_start)
@@ -538,7 +478,23 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                 else:
                                     return False
                             elif (
-                            board[r_start-1, c_start] != EMPTY
+                            board[r_start-1, c_start] == EMPTY and
+                            (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start) or
+                                (r_end == r_start - 1 and c_end == c_start - 1)
+                                ):
+                                    return True
+                                elif (
+                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return 'en passant'
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY and
+                            (board[r_start-1, c_start-1] == EMPTY or board[r_start-1, c_start-1] in list(PIECES['White'].values()))
                             ):
                                 if (
                                 (r_end == r_start - 1 and c_end == c_start + 1)  # en passant
@@ -546,9 +502,23 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return 'en passant'
                                 else:
                                     return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY and
+                            (board[r_start-1, c_start-1] != EMPTY and board[r_start-1, c_start-1] not in list(PIECES['White'].values()))
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start - 1)
+                                ):
+                                    return True
+                                elif (
+                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return 'en passant'
+                                else:
+                                    return False
                             else:
                                 return False
-                    elif c_start == 0:
+                    elif c_start == RANKS - 1:
                         if prev_c_end + 1 == c_start:
                             if (
                             board[r_start-1, c_start] == EMPTY
@@ -568,6 +538,32 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                             ):
                                 if (
                                 (r_end == r_start - 1 and c_end == c_start - 1)  # en passant
+                                ):
+                                    return 'en passant'
+                                else:
+                                    return False
+                            else:
+                                return False
+                    elif c_start == 0:
+                        if prev_c_end - 1 == c_start:
+                            if (
+                            board[r_start-1, c_start] == EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start)
+                                ):
+                                    return True
+                                elif (
+                                (r_end == r_start - 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return 'en passant'
+                                else:
+                                    return False
+                            elif (
+                            board[r_start-1, c_start] != EMPTY
+                            ):
+                                if (
+                                (r_end == r_start - 1 and c_end == c_start + 1)  # en passant
                                 ):
                                     return 'en passant'
                                 else:
@@ -1150,66 +1146,10 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
             elif r_start != 1: # checking all other pawn non-starting positions (except promotion square)
                 if r_start == 4 and prev_r_delta == 2 and prev_moved_piece == W_PAWN and (prev_c_end - 1 == c_start or prev_c_end + 1 == c_start): # en passant
                     if 0 < c_start < RANKS - 1:
-                        if prev_c_end - 1 == c_start:
+                        if prev_c_end + 1 == c_start:
                             if (
                             board[r_start+1, c_start] == EMPTY and
                             (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                            ):
-                                if (
-                                (r_end == r_start + 1 and c_end == c_start)
-                                ):
-                                    return True
-                                elif (
-                                (r_end == r_start + 1 and c_end == c_start + 1) # en passant
-                                ):
-                                    return 'en passant'
-                                else:
-                                    return False
-                            elif (
-                            board[r_start+1, c_start] == EMPTY and
-                            (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                            ):
-                                if (
-                                (r_end == r_start + 1 and c_end == c_start) or
-                                (r_end == r_start + 1 and c_end == c_start - 1)
-                                ):
-                                    return True
-                                elif (
-                                (r_end == r_start + 1 and c_end == c_start + 1) # en passant
-                                ):
-                                    return 'en passant'
-                                else:
-                                    return False
-                            elif (
-                            board[r_start+1, c_start] != EMPTY and
-                            (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
-                            ):
-                                if (
-                                (r_end == r_start + 1 and c_end == c_start + 1)  # en passant
-                                ):
-                                    return 'en passant'
-                                else:
-                                    return False
-                            elif (
-                            board[r_start+1, c_start] != EMPTY and
-                            (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
-                            ):
-                                if (
-                                (r_end == r_start + 1 and c_end == c_start - 1)
-                                ):
-                                    return True
-                                elif (
-                                (r_end == r_start + 1 and c_end == c_start + 1) # en passant
-                                ):
-                                    return 'en passant'
-                                else:
-                                    return False
-                            else:
-                                return False
-                        elif prev_c_end + 1 == c_start:
-                            if (
-                            board[r_start+1, c_start] == EMPTY and
-                            (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                             ):
                                 if (
                                 (r_end == r_start + 1 and c_end == c_start)
@@ -1223,7 +1163,7 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return False
                             elif (
                             board[r_start+1, c_start] == EMPTY and
-                            (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                            (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                             ):
                                 if (
                                 (r_end == r_start + 1 and c_end == c_start) or
@@ -1238,7 +1178,7 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return False
                             elif (
                             board[r_start+1, c_start] != EMPTY and
-                            (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
+                            (board[r_start+1, c_start+1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                             ):
                                 if (
                                 (r_end == r_start + 1 and c_end == c_start - 1)  # en passant
@@ -1248,7 +1188,7 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return False
                             elif (
                             board[r_start+1, c_start] != EMPTY and
-                            (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
+                            (board[r_start+1, c_start+1] != EMPTY and board[r_start+1, c_start+1] not in list(PIECES['Black'].values()))
                             ):
                                 if (
                                 (r_end == r_start + 1 and c_end == c_start + 1)
@@ -1262,23 +1202,39 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return False
                             else:
                                 return False
-                    elif c_start == RANKS - 1:
-                        if prev_c_end - 1 == c_start:
+                        elif prev_c_end - 1 == c_start:
                             if (
-                            board[r_start+1, c_start] == EMPTY
+                            board[r_start+1, c_start] == EMPTY and
+                            (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start+1] in list(PIECES['Black'].values()))
                             ):
                                 if (
                                 (r_end == r_start + 1 and c_end == c_start)
                                 ):
                                     return True
-                                elif(
+                                elif (
                                 (r_end == r_start + 1 and c_end == c_start + 1) # en passant
                                 ):
                                     return 'en passant'
                                 else:
                                     return False
                             elif (
-                            board[r_start+1, c_start] != EMPTY
+                            board[r_start+1, c_start] == EMPTY and
+                            (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_star-1] not in list(PIECES['Black'].values()))
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start) or
+                                (r_end == r_start + 1 and c_end == c_start - 1)
+                                ):
+                                    return True
+                                elif (
+                                (r_end == r_start + 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return 'en passant'
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] != EMPTY and
+                            (board[r_start+1, c_start-1] == EMPTY or board[r_start+1, c_start-1] in list(PIECES['Black'].values()))
                             ):
                                 if (
                                 (r_end == r_start + 1 and c_end == c_start + 1)  # en passant
@@ -1286,9 +1242,23 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                     return 'en passant'
                                 else:
                                     return False
+                            elif (
+                            board[r_start+1, c_start] != EMPTY and
+                            (board[r_start+1, c_start-1] != EMPTY and board[r_start+1, c_start-1] not in list(PIECES['Black'].values()))
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start - 1)
+                                ):
+                                    return True
+                                elif (
+                                (r_end == r_start + 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return 'en passant'
+                                else:
+                                    return False
                             else:
                                 return False
-                    elif c_start == 0:
+                    elif c_start == RANKS - 1:
                         if prev_c_end + 1 == c_start:
                             if (
                             board[r_start+1, c_start] == EMPTY
@@ -1297,7 +1267,7 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                                 (r_end == r_start + 1 and c_end == c_start)
                                 ):
                                     return True
-                                elif (
+                                elif(
                                 (r_end == r_start + 1 and c_end == c_start - 1) # en passant
                                 ):
                                     return 'en passant'
@@ -1308,6 +1278,32 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                             ):
                                 if (
                                 (r_end == r_start + 1 and c_end == c_start - 1)  # en passant
+                                ):
+                                    return 'en passant'
+                                else:
+                                    return False
+                            else:
+                                return False
+                    elif c_start == 0:
+                        if prev_c_end - 1 == c_start:
+                            if (
+                            board[r_start+1, c_start] == EMPTY
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start)
+                                ):
+                                    return True
+                                elif (
+                                (r_end == r_start + 1 and c_end == c_start + 1) # en passant
+                                ):
+                                    return 'en passant'
+                                else:
+                                    return False
+                            elif (
+                            board[r_start+1, c_start] != EMPTY
+                            ):
+                                if (
+                                (r_end == r_start + 1 and c_end == c_start + 1)  # en passant
                                 ):
                                     return 'en passant'
                                 else:
@@ -1585,44 +1581,456 @@ def is_valid_knight_move(piece, player, r_start, c_start, r_end, c_end, board):
 def is_valid_bishop_move(piece, player, r_start, c_start, r_end, c_end, board):
     try:
         if player == PLAYER_1:
-            for i in range(RANKS):
+            for i in range(1, RANKS):
                 if board[r_end, c_end] == EMPTY or board[r_end, c_end] in list(PIECES['Black'].values()):
-                    if board[r_end-i, c_end-i] == EMPTY:
-                        pass
-                    elif board[r_end-i, c_end-i] != EMPTY:
+                    if r_end < r_start and c_end > c_start:
+                        if board[r_end+i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end+i, c_end-i] != EMPTY:
+                            return False
+
+                    elif r_end > r_start and c_end > c_start:
+                        if board[r_end-i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end-i, c_end-i] != EMPTY:
+                            return False
+
+                    elif r_end > r_start and c_end < c_start:
+                        if board[r_end-i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end-i, c_end+i] != EMPTY:
+                            return False
+
+                    elif r_end < r_start and c_end < c_start:
+                        if board[r_end+i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end+i, c_end+i] != EMPTY:
+                            return False
+
+                    else:
                         return False
-                    if r_end-i == r_start and c_end-i == c_start:
-                        return True
-                if (
-                board
-                ):
-                    return True
-            else:
-                return False
+                else:
+                    return False
+
         elif player == PLAYER_2:
-            pass
+            for i in range(1, RANKS):
+                if board[r_end, c_end] == EMPTY or board[r_end, c_end] in list(PIECES['White'].values()):
+                    if r_end < r_start and c_end > c_start:
+                        if board[r_end+i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end+i, c_end-i] != EMPTY:
+                            return False
+
+                    elif r_end > r_start and c_end > c_start:
+                        if board[r_end-i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end-i, c_end-i] != EMPTY:
+                            return False
+
+                    elif r_end > r_start and c_end < c_start:
+                        if board[r_end-i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end-i, c_end+i] != EMPTY:
+                            return False
+
+                    elif r_end < r_start and c_end < c_start:
+                        if board[r_end+i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end+i, c_end+i] != EMPTY:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+
     except IndexError:
         return False
 
-def is_valid_rook_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
-    if player == PLAYER_1:
-        pass
-    elif player == PLAYER_2:
-        pass
+def is_valid_rook_move(piece, player, r_start, c_start, r_end, c_end, board):
+    try:
+        if player == PLAYER_1:
+            for i in range(1, RANKS):
+                if board[r_end, c_end] == EMPTY or board[r_end, c_end] in list(PIECES['Black'].values()):
+                    if r_end == r_start and c_end > c_start:
+                        if board[r_end, c_end-i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end, c_end-i] != EMPTY:
+                            return False
 
-def is_valid_queen_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
-    if player == PLAYER_1:
-        pass
-    elif player == PLAYER_2:
-        pass
+                    elif r_end == r_start and c_end < c_start:
+                        if board[r_end, c_end+i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end, c_end+i] != EMPTY:
+                            return False
 
-def is_valid_king_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
-    if player == PLAYER_1:
-        pass
-    elif player == PLAYER_2:
-        pass
+                    elif r_end > r_start and c_end == c_start:
+                        if board[r_end-i, c_end] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end-i, c_end] != EMPTY:
+                            return False
 
-def is_valid_check_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
-    pass
-    # if piece == 'test'
-    # if is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece)
+                    elif r_end < r_start and c_end == c_start:
+                        if board[r_end+i, c_end] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end+i, c_end] != EMPTY:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+
+        elif player == PLAYER_2:
+            for i in range(1, RANKS):
+                if board[r_end, c_end] == EMPTY or board[r_end, c_end] in list(PIECES['White'].values()):
+                    if r_end == r_start and c_end > c_start:
+                        if board[r_end, c_end-i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end, c_end-i] != EMPTY:
+                            return False
+
+                    elif r_end == r_start and c_end < c_start:
+                        if board[r_end, c_end+i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end, c_end+i] != EMPTY:
+                            return False
+
+                    elif r_end > r_start and c_end == c_start:
+                        if board[r_end-i, c_end] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end-i, c_end] != EMPTY:
+                            return False
+
+                    elif r_end < r_start and c_end == c_start:
+                        if board[r_end+i, c_end] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end+i, c_end] != EMPTY:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+
+    except IndexError:
+        return False
+
+def is_valid_queen_move(piece, player, r_start, c_start, r_end, c_end, board):
+    try:
+        if player == PLAYER_1:
+            for i in range(1, RANKS):
+                if board[r_end, c_end] == EMPTY or board[r_end, c_end] in list(PIECES['Black'].values()):
+                # diagonal movement
+                    if r_end < r_start and c_end > c_start:
+                        if board[r_end+i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end+i, c_end-i] != EMPTY:
+                            return False
+                    elif r_end > r_start and c_end > c_start:
+                        if board[r_end-i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end-i, c_end-i] != EMPTY:
+                            return False
+                    elif r_end > r_start and c_end < c_start:
+                        if board[r_end-i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end-i, c_end+i] != EMPTY:
+                            return False
+                    elif r_end < r_start and c_end < c_start:
+                        if board[r_end+i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end+i, c_end+i] != EMPTY:
+                            return False
+
+                # horizontal or vertical movement
+                    elif r_end == r_start and c_end > c_start:
+                        if board[r_end, c_end-i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end, c_end-i] != EMPTY:
+                            return False
+
+                    elif r_end == r_start and c_end < c_start:
+                        if board[r_end, c_end+i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end, c_end+i] != EMPTY:
+                            return False
+
+                    elif r_end > r_start and c_end == c_start:
+                        if board[r_end-i, c_end] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end-i, c_end] != EMPTY:
+                            return False
+
+                    elif r_end < r_start and c_end == c_start:
+                        if board[r_end+i, c_end] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end+i, c_end] != EMPTY:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+
+        elif player == PLAYER_2:
+            for i in range(1, RANKS):
+                if board[r_end, c_end] == EMPTY or board[r_end, c_end] in list(PIECES['White'].values()):
+                # diagonal movement
+                    if r_end < r_start and c_end > c_start:
+                        if board[r_end+i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end+i, c_end-i] != EMPTY:
+                            return False
+                    elif r_end > r_start and c_end > c_start:
+                        if board[r_end-i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end-i, c_end-i] != EMPTY:
+                            return False
+                    elif r_end > r_start and c_end < c_start:
+                        if board[r_end-i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end-i, c_end+i] != EMPTY:
+                            return False
+                    elif r_end < r_start and c_end < c_start:
+                        if board[r_end+i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end+i, c_end+i] != EMPTY:
+                            return False
+
+                # horizontal or vertical movement
+                    elif r_end == r_start and c_end > c_start:
+                        if board[r_end, c_end-i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end, c_end-i] != EMPTY:
+                            return False
+
+                    elif r_end == r_start and c_end < c_start:
+                        if board[r_end, c_end+i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end, c_end+i] != EMPTY:
+                            return False
+
+                    elif r_end > r_start and c_end == c_start:
+                        if board[r_end-i, c_end] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end-i, c_end] != EMPTY:
+                            return False
+
+                    elif r_end < r_start and c_end == c_start:
+                        if board[r_end+i, c_end] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end+i, c_end] != EMPTY:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+
+    except IndexError:
+        return False
+
+def is_valid_king_move(piece, player, r_start, c_start, r_end, c_end, board):
+    try:
+        if player == PLAYER_1:
+            for i in range(1, RANKS):
+                if board[r_end, c_end] == EMPTY or board[r_end, c_end] in list(PIECES['Black'].values()):
+                # diagonal movement
+                    if r_end < r_start and c_end > c_start and (r_end == r_start - 1 and c_end == c_start + 1):
+                        if board[r_end+i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end+i, c_end-i] != EMPTY:
+                            return False
+                    elif r_end > r_start and c_end > c_start and (r_end == r_start + 1 and c_end == c_start + 1):
+                        if board[r_end-i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end-i, c_end-i] != EMPTY:
+                            return False
+                    elif r_end > r_start and c_end < c_start and (r_end == r_start + 1 and c_end == c_start - 1):
+                        if board[r_end-i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end-i, c_end+i] != EMPTY:
+                            return False
+                    elif r_end < r_start and c_end < c_start and (r_end == r_start - 1 and c_end == c_start - 1):
+                        if board[r_end+i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end+i, c_end+i] != EMPTY:
+                            return False
+
+                # horizontal or vertical movement
+                    elif r_end == r_start and c_end > c_start and c_end == c_start + 1:
+                        if board[r_end, c_end-i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end, c_end-i] != EMPTY:
+                            return False
+
+                    elif r_end == r_start and c_end < c_start and c_end == c_start - 1:
+                        if board[r_end, c_end+i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end, c_end+i] != EMPTY:
+                            return False
+
+                    elif r_end > r_start and c_end == c_start and r_end == r_start + 1:
+                        if board[r_end-i, c_end] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end-i, c_end] != EMPTY:
+                            return False
+
+                    elif r_end < r_start and c_end == c_start and r_end == r_start - 1:
+                        if board[r_end+i, c_end] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end+i, c_end] != EMPTY:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+
+        elif player == PLAYER_2:
+            for i in range(1, RANKS):
+                if board[r_end, c_end] == EMPTY or board[r_end, c_end] in list(PIECES['White'].values()):
+                # diagonal movement
+                    if r_end < r_start and c_end > c_start and (r_end == r_start - 1 and c_end == c_start + 1):
+                        if board[r_end+i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end+i, c_end-i] != EMPTY:
+                            return False
+                    elif r_end > r_start and c_end > c_start and (r_end == r_start + 1 and c_end == c_start + 1):
+                        if board[r_end-i, c_end-i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end-i, c_end-i] != EMPTY:
+                            return False
+                    elif r_end > r_start and c_end < c_start and (r_end == r_start + 1 and c_end == c_start - 1):
+                        if board[r_end-i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end-i, c_end+i] != EMPTY:
+                            return False
+                    elif r_end < r_start and c_end < c_start and (r_end == r_start - 1 and c_end == c_start - 1):
+                        if board[r_end+i, c_end+i] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end+i, c_end+i] != EMPTY:
+                            return False
+
+                # horizontal or vertical movement
+                    elif r_end == r_start and c_end > c_start and c_end == c_start + 1:
+                        if board[r_end, c_end-i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end-i == c_start:
+                            return True
+                        elif board[r_end, c_end-i] != EMPTY:
+                            return False
+
+                    elif r_end == r_start and c_end < c_start and c_end == c_start - 1:
+                        if board[r_end, c_end+i] == EMPTY:
+                            pass
+                        elif r_end == r_start and c_end+i == c_start:
+                            return True
+                        elif board[r_end, c_end+i] != EMPTY:
+                            return False
+
+                    elif r_end > r_start and c_end == c_start and r_end == r_start + 1:
+                        if board[r_end-i, c_end] == EMPTY:
+                            pass
+                        elif r_end-i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end-i, c_end] != EMPTY:
+                            return False
+
+                    elif r_end < r_start and c_end == c_start and r_end == r_start - 1:
+                        if board[r_end+i, c_end] == EMPTY:
+                            pass
+                        elif r_end+i == r_start and c_end == c_start:
+                            return True
+                        elif board[r_end+i, c_end] != EMPTY:
+                            return False
+                    else:
+                        return False
+                else:
+                    return False
+
+    except IndexError:
+        return False

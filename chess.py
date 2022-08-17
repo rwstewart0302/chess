@@ -85,7 +85,6 @@ def create_board():
 ### - CLEANOUT ALL PRINTS AND INPUTS WHEN PYGAME IS IMPLEMENTED
 ### - CREATE GLOBAL JSON FILE FOR PIECE STRING VALUES
 ### - ADD SOME PRINT STATEMENTS FOR INVALID PIECE SELECTIONS
-### - CHECK FOR CHECK IN MAIN FUNCTION!!!
 
 def main():
     player = 'White'
@@ -158,9 +157,9 @@ def main():
                 elif board[r_start, c_start] == PIECES[player]['ROOK']:
                     piece_move = cp.Rook(board, player)
                 elif board[r_start, c_start] == PIECES[player]['QUEEN']:
-                    piece_move = cp.Queen(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                    piece_move = cp.Queen(board, player)
                 elif board[r_start, c_start] == PIECES[player]['KING']:
-                    piece_move = cp.King(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                    piece_move = cp.King(board, player)
 
                 board, move_check = piece_move.move(r_start=r_start, c_start=c_start, r_end=r_end, c_end=c_end)
 
