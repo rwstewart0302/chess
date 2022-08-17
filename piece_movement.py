@@ -48,7 +48,7 @@ FILES = 8
 ### - CHANGE PIECES['White'] to PIECES['Black'] for player_2
 ### - ADD CHECK AND CHECKMATE CONDITIONS using check.is_check() and check.is_checkmate() to player_1 and player_2
 
-
+### - MIGHT BE ABLE TO SIMPLIFY PAWN MOVEMENT BECAUSE OF TRY/EXCEPT...TRY CUTTING DOWN ON CONDITIONALS
 def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
     try:
         if player == PLAYER_1:
@@ -1582,11 +1582,27 @@ def is_valid_knight_move(piece, player, r_start, c_start, r_end, c_end, board):
     except IndexError:
         return False
 
-def is_valid_bishop_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
-    if player == PLAYER_1:
-        pass
-    elif player == PLAYER_2:
-        pass
+def is_valid_bishop_move(piece, player, r_start, c_start, r_end, c_end, board):
+    try:
+        if player == PLAYER_1:
+            for i in range(RANKS):
+                if board[r_end, c_end] == EMPTY or board[r_end, c_end] in list(PIECES['Black'].values()):
+                    if board[r_end-i, c_end-i] == EMPTY:
+                        pass
+                    elif board[r_end-i, c_end-i] != EMPTY:
+                        return False
+                    if r_end-i == r_start and c_end-i == c_start:
+                        return True
+                if (
+                board
+                ):
+                    return True
+            else:
+                return False
+        elif player == PLAYER_2:
+            pass
+    except IndexError:
+        return False
 
 def is_valid_rook_move(piece, player, r_start, c_start, r_end, c_end, board,  prev_r_delta, prev_c_end, prev_moved_piece):
     if player == PLAYER_1:

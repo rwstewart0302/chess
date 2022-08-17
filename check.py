@@ -220,29 +220,49 @@ def is_checkmate(player, board):
                 for r in range(RANKS):
                     for c in range(FILES):
                         if py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start+c, board):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start-c, board):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start-c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start-c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start+c, board):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start-r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start-r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start-c, board):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start-r, c_start-c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start-r, c_start-c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         else:
                             pass
 
@@ -254,17 +274,27 @@ def is_checkmate(player, board):
             for r_start, c_start in zip(r_bishop, c_bishop):
                 for i in range(RANKS):
                     if py.is_valid_bishop_move(piece, player, r_start, c_start, r_start+i, c_start+i, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start+i, c_start+i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start+i, c_start+i] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     elif py.is_valid_bishop_move(piece, player, r_start, c_start, r_start-i, c_start-i, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start-i, c_start-i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start-i, c_start-i] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     else:
                         pass
 
@@ -276,29 +306,47 @@ def is_checkmate(player, board):
             for r_start, c_start in zip(r_rook, c_rook):
                 for i in range(RANKS):
                     if py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start+i, board):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start, c_start+c] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start, c_start+c] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except:
+                            pass
                     elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start-i, board):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start, c_start-i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start, c_start-i] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start+i, c_start, board):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start+r, c_start+c] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start+r, c_start+c] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start-i, c_start, board):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start+r, c_start+c] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start+r, c_start+c] = piece
+                            if not is_check(player, t_board):
+                                return False
+                        except IndexError:
+                            pass
                     else:
                         pass
 
@@ -311,29 +359,49 @@ def is_checkmate(player, board):
                 for r in range(RANKS):
                     for c in range(FILES):
                         if py.is_valid_queen_move(piece, player, r_start, c_start, r_start+r, c_start+c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_queen_move(piece, player, r_start, c_start, r_start+r, c_start-c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_queen_move(piece, player, r_start, c_start, r_start-r, c_start+c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_queen_move(piece, player, r_start, c_start, r_start-r, c_start-c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         else:
                             pass
 
@@ -353,17 +421,27 @@ def is_checkmate(player, board):
                 for r in range(RANKS):
                     for c in range(FILES):
                         if py.is_valid_pawn_move(piece, player, r_start, c_start, r_start+r, c_start+c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_pawn_move(piece, player, r_start, c_start, r_start+r, c_start-c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         else:
                             pass
 
@@ -376,29 +454,49 @@ def is_checkmate(player, board):
                 for r in range(RANKS):
                     for c in range(FILES):
                         if py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start+c, board):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start+r, c_start-c, board):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start-c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start-c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start+c, board):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start-r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start-r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_knight_move(piece, player, r_start, c_start, r_start-r, c_start-c, board):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start-r, c_start-c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start-r, c_start-c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         else:
                             pass
 
@@ -410,17 +508,27 @@ def is_checkmate(player, board):
             for r_start, c_start in zip(r_bishop, c_bishop):
                 for i in range(RANKS):
                     if py.is_valid_bishop_move(piece, player, r_start, c_start, r_start+i, c_start+i, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start+i, c_start+i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start+i, c_start+i] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     elif py.is_valid_bishop_move(piece, player, r_start, c_start, r_start-i, c_start-i, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start-i, c_start-i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start-i, c_start-i] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     else:
                         pass
 
@@ -432,29 +540,49 @@ def is_checkmate(player, board):
             for r_start, c_start in zip(r_rook, c_rook):
                 for i in range(RANKS):
                     if py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start+i, board):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start, c_start+i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start, c_start+i] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start-i, board):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start, c_start-i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start, c_start-i] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start+i, c_start, board):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start+i, c_start] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start+i, c_start] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     elif py.is_valid_rook_move(piece, player, r_start, c_start, r_start-i, c_start, board):
-                        t_board = board.copy()
-                        t_board[r_start, c_start] = EMPTY
-                        t_board[r_start-i, ] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        try:
+                            t_board = board.copy()
+                            t_board[r_start, c_start] = EMPTY
+                            t_board[r_start-i, ] = piece
+                            if not is_check(player, t_board):
+                                return False
+                            else:
+                                pass
+                        except IndexError:
+                            pass
                     else:
                         pass
 
@@ -467,29 +595,49 @@ def is_checkmate(player, board):
                 for r in range(RANKS):
                     for c in range(FILES):
                         if py.is_valid_queen_move(piece, player, r_start, c_start, r_start+r, c_start+c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_queen_move(piece, player, r_start, c_start, r_start+r, c_start-c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_queen_move(piece, player, r_start, c_start, r_start-r, c_start+c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         elif py.is_valid_queen_move(piece, player, r_start, c_start, r_start-r, c_start-c, board, prev_r_delta, prev_c_end, prev_moved_piece):
-                            t_board = board.copy()
-                            t_board[r_start, c_start] = EMPTY
-                            t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            try:
+                                t_board = board.copy()
+                                t_board[r_start, c_start] = EMPTY
+                                t_board[r_start+r, c_start+c] = piece
+                                if not is_check(player, t_board):
+                                    return False
+                                else:
+                                    pass
+                            except IndexError:
+                                pass
                         else:
                             pass
 

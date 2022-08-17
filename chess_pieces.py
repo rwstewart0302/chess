@@ -49,6 +49,7 @@ class Pawn:
     def __init__(self, board, player, prev_r_delta, prev_c_end, prev_moved_piece):
         self.value = 1
         self.board = board
+        self.temp_board = board.copy()
         self.player = player
         self.prev_r_delta = prev_r_delta
         self.prev_c_end = prev_c_end
@@ -62,16 +63,12 @@ class Pawn:
         self.c_start = None
         self.r_end = None
         self.c_end = None
-        self.temp_board = None
-
 
     def move(self, r_start, c_start, r_end, c_end):
         self.r_start = r_start
         self.c_start = c_start
         self.r_end = r_end
         self.c_end = c_end
-
-        self.temp_board = self.board
 
         print('test: ', pm.is_valid_pawn_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece))
 
@@ -130,6 +127,7 @@ class Rook:
     def __init__(self, board, player):
         self.rook = 5
         self.board = board
+        self.temp_board = board.copy()
         self.player = player
         if self.player == PLAYER_1:
             self.piece = W_ROOK
@@ -140,15 +138,12 @@ class Rook:
         self.c_start = None
         self.r_end = None
         self.c_end = None
-        self.temp_board = None
 
     def move(self, r_start, c_start, r_end, c_end):
         self.r_start = r_start
         self.c_start = c_start
         self.r_end = r_end
         self.c_end = c_end
-
-        self.temp_board = self.board
 
         if pm.is_valid_rook_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board):
             self.temp_board[self.r_start, self.c_start] = EMPTY
@@ -169,6 +164,7 @@ class Knight:
         self.knight = 3
         self.player = player
         self.board = board
+        self.temp_board = board.copy()
         if self.player == PLAYER_1:
             self.piece = W_KNIGHT
         elif self.player == PLAYER_2:
@@ -178,15 +174,12 @@ class Knight:
         self.c_start = None
         self.r_end = None
         self.c_end = None
-        self.temp_board = None
 
     def move(self, r_start, c_start, r_end, c_end):
         self.r_start = r_start
         self.c_start = c_start
         self.r_end = r_end
         self.c_end = c_end
-
-        self.temp_board = self.board
 
         print('test: ', pm.is_valid_knight_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board))
 
@@ -206,34 +199,41 @@ class Knight:
             return self.board, False
 
 class Bishop:
-    def __init__(board, player, turn, prev_r_delta, prev_c_end, prev_moved_piece):
-        self.bishop = 3
-        self.board = board
-        self.turn = turn
-        self.player = player
-        self.prev_r_delta = prev_r_delta
-        self.prev_c_end = prev_c_end
-        self.prev_moved_piece = prev_moved_piece
-        if self.player == PLAYER_1:
-            self.piece = W_BISHOP
-        elif self.player == PLAYER_2:
-            self.piece = B_BISHOP
+        def __init__(self, board, player):
+            self.rook = 3
+            self.board = board
+            self.temp_board = board.copy()
+            self.player = player
+            if self.player == PLAYER_1:
+                self.piece = W_BISHOP
+            elif self.player == PLAYER_2:
+                self.piece = B_BISHOP
 
-        self.r_start = None
-        self.c_start = None
-        self.r_end = None
-        self.c_end = None
+            self.r_start = None
+            self.c_start = None
+            self.r_end = None
+            self.c_end = None
 
-    def move(self, r_start, c_start, r_end, c_end):
-        self.r_start = r_start
-        self.c_start = c_start
-        self.r_end = r_end
-        self.c_end = c_end
-        if self.piece == W_BISHOP or self.piece == B_BISHOP:
-            if pm.is_valid_bishop_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.prev_r_delta, self.prev_c_end, self.prev_moved_piece):
-                self.board[self.r_start, self.c_start] = EMPTY
-                self.board[self.r_end, self.c_end] = self.piece
-        return self.board
+        def move(self, r_start, c_start, r_end, c_end):
+            self.r_start = r_start
+            self.c_start = c_start
+            self.r_end = r_end
+            self.c_end = c_end
+
+            if pm.is_valid_bishop_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board):
+                self.temp_board[self.r_start, self.c_start] = EMPTY
+                self.temp_board[self.r_end, self.c_end] = self.piece
+
+                if check.is_check(self.player, self.temp_board):
+                    print(f'not a valid move {self.player} is in check!')
+                    return self.board, False
+
+                elif not check.is_check(self.player, self.temp_board):
+                    self.board = self.temp_board
+                    return self.board, True
+            else:
+                return self.board, False
+
 
 class Queen:
     def __init__(board, player, turn, prev_r_delta, prev_c_end, prev_moved_piece):

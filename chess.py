@@ -99,6 +99,7 @@ def main():
             player = 'Black'
 
         print('checkmate? ', check.is_checkmate(player, board))
+        if check.is_checkmate(player, board):
             if player == 'White':
                 winning_player = 'Black'
             elif player == 'Black':
@@ -153,7 +154,7 @@ def main():
                 elif board[r_start, c_start] == PIECES[player]['KNIGHT']:
                     piece_move = cp.Knight(board, player)
                 elif board[r_start, c_start] == PIECES[player]['BISHOP']:
-                    piece_move = cp.Bishop(board, player, turn_counter, prev_r_delta=prev_r_delta, prev_c_end=prev_c_end, prev_moved_piece=prev_moved_piece)
+                    piece_move = cp.Bishop(board, player)
                 elif board[r_start, c_start] == PIECES[player]['ROOK']:
                     piece_move = cp.Rook(board, player)
                 elif board[r_start, c_start] == PIECES[player]['QUEEN']:
