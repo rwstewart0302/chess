@@ -88,7 +88,7 @@ def create_board():
 
 def main():
     player = 'White'
-    board = create_board() #
+    board = create_board()
     turn_counter = 0
     while True: # continue playing until checkmate is reached or the game is quit
         # setting our player based on turn
