@@ -9,9 +9,6 @@ prev_moved_piece = config.EMPTY
 def is_check(player, board):
     if player == config.PLAYER_1:
         index_king = np.where(board == config.W_KING)
-        print('index white king: ', index_king)
-        print('r_king: ', index_king[0])
-        print('c_king: ', index_king[1])
         r_king = int(index_king[0])
         c_king = int(index_king[1])
 
@@ -146,7 +143,7 @@ def is_check(player, board):
         return False
 
 
-def is_checkmate_or_stalemate(player, board):
+def is_game_over(player, board):
     if player == config.PLAYER_1:
         index_king = np.where(board == config.W_KING)
         r_king = int(index_king[0])
