@@ -126,8 +126,11 @@ def draw_board(board):
 
 ### TODO:
 ### - CLEANOUT ALL PRINTS AND INPUTS WHEN PYGAME IS IMPLEMENTED
-### - CREATE GLOBAL JSON FILE FOR PIECE STRING VALUES
 ### - ADD SOME PRINT STATEMENTS FOR INVALID PIECE SELECTIONS
+### - CLEANUP MAIN FILE ---> MAKE VARIABLES AND LOOPS MORE READABLE
+### - DEFINE CHESS_BOARD.PY FUNCTION TO HANDLE PYGAME STUFF
+### - GIVE A CONDITION TO PIECE_MOVEMENT.PY FOR CASTLING AND STALEMATE!!!
+### - DONT FORGET KING/KING STALEMATE AND THREEFOLD REPITION
 
 def main():
     player = config.PLAYER_1
@@ -158,19 +161,27 @@ def main():
             elif turn_counter % 2 != 0:
                 player = config.PLAYER_2
 
-            if check.is_checkmate(player, board):
-                if player == config.PLAYER_1:
-                    winning_player = config.PLAYER_2
+            if check.is_check(player, board):
+                if check.is_checkmate_or_stalemate(player, board):
+                    if player == config.PLAYER_1:
+                        winning_player = config.PLAYER_2
+                        game_over = True
+                    elif player == config.PLAYER_2:
+                        winning_player = config.PLAYER_1
+                        game_over = True
+                    print(f'{winning_player} wins!')
+
+            elif not check.is_check(player, board):
+                if check.is_checkmate_or_stalemate(player, board):
                     game_over = True
-                elif player == config.PLAYER_2:
-                    winning_player = config.PLAYER_1
-                    game_over = True
-                print(f'{winning_player} wins!')
+                    print('stalemate')
+
+        if not game_over:
+            print()
+            print(board)
+            print(f'It is {player}\'s turn...')
 
         while not game_over and selection_error == 0: # continue asking for player's piece selection and movement until their choice is valid
-            print(board)
-            print()
-            print(f'It is {player}\'s turn...')
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
