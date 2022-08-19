@@ -161,6 +161,8 @@ def main():
             elif turn_counter % 2 != 0:
                 player = config.PLAYER_2
 
+            print('stalemate? ', check.is_checkmate_or_stalemate(player, board))
+
             if check.is_check(player, board):
                 if check.is_checkmate_or_stalemate(player, board):
                     if player == config.PLAYER_1:

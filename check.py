@@ -8,12 +8,12 @@ prev_moved_piece = config.EMPTY
 
 def is_check(player, board):
     if player == config.PLAYER_1:
-        try:
-            index_king = np.where(board == config.W_KING)
-            r_king = int(index_king[0])
-            c_king = int(index_king[1])
-        except TypeError:
-            return False
+        index_king = np.where(board == config.W_KING)
+        print('index white king: ', index_king)
+        print('r_king: ', index_king[0])
+        print('c_king: ', index_king[1])
+        r_king = int(index_king[0])
+        c_king = int(index_king[1])
 
         piece = config.B_PAWN
         pawn_index = np.where(board == piece)
@@ -65,16 +65,23 @@ def is_check(player, board):
             else:
                 pass
 
+        piece = config.B_KING
+        king_index = np.where(board == piece) # rook check
+        r_king_b = list(king_index[0])
+        c_king_b = list(king_index[1])
+        for r_start, c_start in zip(r_king_b, c_king_b):
+            if pm.is_valid_king_move(piece, config.PLAYER_2, r_start, c_start, r_king, c_king, board):
+                return True
+            else:
+                pass
+
         return False
 
     if player == config.PLAYER_2:
         # checking if config.PLAYER_2's king is in check
-        try:
-            index_king = np.where(board == config.B_KING)
-            r_king = int(index_king[0])
-            c_king = int(index_king[1])
-        except TypeError:
-            return False
+        index_king = np.where(board == config.B_KING)
+        r_king = int(index_king[0])
+        c_king = int(index_king[1])
 
         piece = config.W_PAWN
         pawn_index = np.where(board == piece)
@@ -126,6 +133,16 @@ def is_check(player, board):
             else:
                 pass
 
+        piece = config.W_KING
+        king_index = np.where(board == piece) # rook check
+        r_king_w = list(king_index[0])
+        c_king_w = list(king_index[1])
+        for r_start, c_start in zip(r_king_w, c_king_w):
+            if pm.is_valid_king_move(piece, config.PLAYER_1, r_start, c_start, r_king, c_king, board):
+                return True
+            else:
+                pass
+
         return False
 
 
@@ -148,8 +165,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -159,8 +177,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -179,8 +198,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -190,8 +210,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start-c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -201,8 +222,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start-r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -212,8 +234,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start-r, c_start-c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -233,8 +256,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start+i, c_start+i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -244,8 +268,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start-i, c_start-i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -265,8 +290,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start, c_start+c] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except:
@@ -276,8 +302,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start, c_start-i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -287,8 +314,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start+r, c_start+c] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -298,8 +326,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start+r, c_start+c] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                     except IndexError:
                         pass
                 else:
@@ -318,8 +347,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -329,8 +359,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -340,8 +371,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -351,8 +383,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -373,8 +406,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -384,8 +418,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -395,8 +430,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -406,8 +442,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.W_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -436,8 +473,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -447,8 +485,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -469,8 +508,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -480,8 +520,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start-c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -491,8 +532,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start-r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -502,8 +544,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start-r, c_start-c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -523,8 +566,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start+i, c_start+i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -534,8 +578,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start-i, c_start-i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -555,8 +600,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start, c_start+i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -566,8 +612,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start, c_start-i] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -577,8 +624,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start+i, c_start] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -588,8 +636,9 @@ def is_checkmate_or_stalemate(player, board):
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
                         t_board[r_start-i, ] = piece
-                        if not is_check(player, t_board):
-                            return False
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
                         else:
                             pass
                     except IndexError:
@@ -610,8 +659,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -621,8 +671,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -632,8 +683,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -643,8 +695,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -665,8 +718,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -676,8 +730,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -687,8 +742,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
@@ -698,8 +754,9 @@ def is_checkmate_or_stalemate(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            if not is_check(player, t_board):
-                                return False
+                            if config.B_KING in t_board:
+                                if not is_check(player, t_board):
+                                    return False
                             else:
                                 pass
                         except IndexError:
