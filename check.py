@@ -78,7 +78,7 @@ def is_check(player, board):
         r_king_b = list(king_index[0])
         c_king_b = list(king_index[1])
         for r_start, c_start in zip(r_king_b, c_king_b):
-            if pm.is_valid_king_move(piece, config.PLAYER_2, r_start, c_start, r_king, c_king, board, ):
+            if pm.is_valid_king_move(piece, config.PLAYER_2, r_start, c_start, r_king, c_king, board):
                 return True
             else:
                 pass
@@ -156,7 +156,7 @@ def is_check(player, board):
         r_king_w = list(king_index[0])
         c_king_w = list(king_index[1])
         for r_start, c_start in zip(r_king_w, c_king_w):
-            if pm.is_valid_king_move(piece, config.PLAYER_1, r_start, c_start, r_king, c_king, board, ):
+            if pm.is_valid_king_move(piece, config.PLAYER_1, r_start, c_start, r_king, c_king, board):
                 return True
             else:
                 pass
@@ -472,9 +472,9 @@ def is_game_over(player, board):
         r_king = list(king_index[0])
         c_king = list(king_index[1])
         for r_start, c_start in zip(r_king, c_king):
-            for r in range(config.RANKS):
-                for c in range(config.FILES):
-                    if pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start+c, board, ):
+            for r in range(2):
+                for c in range(2):
+                    if pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start+c, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -486,7 +486,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start-c, board, ):
+                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start-c, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -498,7 +498,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start+c, board, ):
+                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start+c, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -510,7 +510,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start-c, board, ):
+                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start-c, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -719,7 +719,7 @@ def is_game_over(player, board):
                 else:
                     pass
 
-        piece = config.B_QUEEN_ROOK
+        piece = config.B_KING_ROOK
         rook_index = np.where(board == piece)
         r_rook = list(rook_index[0])
         c_rook = list(rook_index[1])
@@ -841,9 +841,9 @@ def is_game_over(player, board):
         r_king = list(king_index[0])
         c_king = list(king_index[1])
         for r_start, c_start in zip(r_king, c_king):
-            for r in range(config.RANKS):
-                for c in range(config.FILES):
-                    if pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start+c, board, ):
+            for r in range(2):
+                for c in range(2):
+                    if pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start+c, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -855,7 +855,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start-c, board, ):
+                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start-c, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -867,7 +867,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start+c, board, ):
+                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start+c, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -879,7 +879,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_start-r, c_start-c, board, ):
+                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start-c, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY

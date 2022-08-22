@@ -1851,7 +1851,7 @@ def is_valid_queen_move(piece, player, r_start, c_start, r_end, c_end, board):
 def is_valid_king_move(piece, player, r_start, c_start, r_end, c_end, board):
     try:
         if player == config.PLAYER_1:
-            for i in range(1, config.RANKS):
+            for i in range(config.RANKS):
                 if board[r_end, c_end] == config.EMPTY or board[r_end, c_end] in config.PLAYER_2_PIECES:
                 # diagonal movement
                     if r_end < r_start and c_end > c_start and (r_end == r_start - 1 and c_end == c_start + 1):

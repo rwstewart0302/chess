@@ -182,6 +182,8 @@ def main():
 
     while not game_over:
         if turn_start:
+            king_draw_check = 1
+
             if turn_counter > 0:
                 three_fold_repition = 0
                 for board_state in board_states:
@@ -192,6 +194,15 @@ def main():
                     print('Threefold Repition Draw!')
                 else:
                     board_states.append(board)
+
+            for row in board:
+                for piece in row:
+                    if piece != config.W_KING or piece != config.B_KING or piece != config.EMPTY:
+                        king_draw_check = 0
+
+            if king_draw_check == 1:
+                game_over = True
+                print('King\'s Only Stalemate!')
 
             print(board)
             draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
