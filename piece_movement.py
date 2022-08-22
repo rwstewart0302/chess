@@ -1848,7 +1848,7 @@ def is_valid_queen_move(piece, player, r_start, c_start, r_end, c_end, board):
     except IndexError:
         return False
 
-def is_valid_king_move(piece, player, can_castle, r_start, c_start, r_end, c_end, board, ischeck):
+def is_valid_king_move(piece, player, r_start, c_start, r_end, c_end, board):
     try:
         if player == config.PLAYER_1:
             for i in range(1, config.RANKS):

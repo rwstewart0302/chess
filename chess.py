@@ -243,6 +243,9 @@ def main():
                     curr_piece_r = r_start
                     draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
                     pygame.display.update()
+                else:
+                    select_piece = True
+                    mouse_click_1 = False
 
             if turn_counter == 0: # creating initial values for previous moved pieces to check for en passant
                 prev_r_delta=0
@@ -258,13 +261,13 @@ def main():
                     elif selected_piece == config.W_BISHOP:
                         piece_move = cp.Bishop(board, player)
                     elif selected_piece == config.W_KING_ROOK:
-                        piece_move = cp.Rook(board, player, piece)
+                        piece_move = cp.Rook(board, player, selected_piece)
                     elif selected_piece == config.W_QUEEN_ROOK:
-                        piece_move = cp.Rook(board, player, piece)
+                        piece_move = cp.Rook(board, player, selected_piece)
                     elif selected_piece == config.W_QUEEN:
                         piece_move = cp.Queen(board, player)
                     elif selected_piece == config.W_KING:
-                        piece_move = cp.King(board, player, white_can_castle_queenside, white_can_castle_kingside, ischeck)
+                        piece_move = cp.King(board, player, white_can_castle_queenside, white_can_castle_kingside)
 
                     if selected_piece in valid_pieces:
                         board, move_check = piece_move.move(r_start, c_start, r_end, c_end)
@@ -272,9 +275,22 @@ def main():
                             white_can_castle_queenside = False
                         elif move_check and selected_piece == config.W_KING_ROOK:
                             white_can_castle_kingside = False
+
                     else:
                         move_check = False
 
+                    if move_check and selected_piece == config.W_KING:
+                        if (
+                        r_start + 1 == r_end or
+                        r_start - 1 == r_end or
+                        c_start + 1 == c_end or
+                        c_start - 1 == c_end
+                        ):
+                            white_can_castle_queenside = False
+                            white_can_castle_kingside = False
+
+                    else:
+                        pass
 
                 elif player == config.PLAYER_2:
                     if selected_piece == config.B_PAWN:
@@ -284,9 +300,9 @@ def main():
                     elif selected_piece == config.B_BISHOP:
                         piece_move = cp.Bishop(board, player)
                     elif selected_piece == config.B_KING_ROOK:
-                        piece_move = cp.Rook(board, player, piece)
+                        piece_move = cp.Rook(board, player, selected_piece)
                     elif selected_piece == config.B_QUEEN_ROOK:
-                        piece_move = cp.Rook(board, player, piece)
+                        piece_move = cp.Rook(board, player, selected_piece)
                     elif selected_piece == config.B_QUEEN:
                         piece_move = cp.Queen(board, player)
                     elif selected_piece == config.B_KING:
@@ -301,6 +317,18 @@ def main():
                     else:
                         move_check = False
 
+                    if move_check and selected_piece == config.B_KING:
+                        if (
+                        r_start + 1 == r_end or
+                        r_start - 1 == r_end or
+                        c_start + 1 == c_end or
+                        c_start - 1 == c_end
+                        ):
+                            black_can_castle_queenside = False
+                            black_can_castle_kingside = False
+
+                    else:
+                        pass
 
             if move_check and mouse_click_2: # if the move is valid then go to the next player
                 prev_r_delta = abs(r_end - r_start)

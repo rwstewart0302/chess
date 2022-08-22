@@ -1,5 +1,6 @@
 import check, config
 import piece_movement as pm
+import castle_movement as cm
 
 class Pawn:
     def __init__(self, board, player, prev_r_delta, prev_c_end, prev_moved_piece):
@@ -220,14 +221,13 @@ class Queen:
             return self.board, False
 
 class King:
-    def __init__(self, board, player, can_castle_queenside, can_castle_kingside, ischeck):
+    def __init__(self, board, player, can_castle_queenside, can_castle_kingside):
         self.rook = 1_000_000
         self.board = board
         self.temp_board = board.copy()
         self.player = player
         self.can_castle_queenside = can_castle_queenside
         self.can_castle_kingside = can_castle_kingside
-        self.ischeck = ischeck
         if self.player == config.PLAYER_1:
             self.piece = config.W_KING
         elif self.player == config.PLAYER_2:
@@ -244,7 +244,7 @@ class King:
         self.r_end = r_end
         self.c_end = c_end
 
-        if pm.is_valid_king_move(self.piece, self.player, self.can_castle_queenside, self.can_castle_queenside, self.r_start, self.c_start, self.r_end, self.c_end, self.board, self.ischeck):
+        if pm.is_valid_king_move(self.piece, self.player, self.r_start, self.c_start, self.r_end, self.c_end, self.board):
             self.temp_board[self.r_start, self.c_start] = config.EMPTY
             self.temp_board[self.r_end, self.c_end] = self.piece
 
@@ -255,5 +255,26 @@ class King:
             elif not check.is_check(self.player, self.temp_board):
                 self.board = self.temp_board
                 return self.board, True
+
+        elif cm.is_valid_castle(self.player, self.can_castle_queenside, self.can_castle_kingside, self.r_start, self.c_start, self.r_end, self.c_end, self.board) == 'kingside':
+            self.board[self.r_start, self.c_start] = config.EMPTY
+            self.board[self.r_start, self.c_start+3] = config.EMPTY
+            if self.player == config.PLAYER_1:
+                self.board[self.r_start, self.c_start+1] = config.W_KING_ROOK
+            elif self.player == config.PLAYER_2:
+                self.board[self.r_start, self.c_start+1] = config.B_KING_ROOK
+            self.board[self.r_end, self.c_end] = self.piece
+            return self.board, True
+
+        elif cm.is_valid_castle(self.player, self.can_castle_queenside, self.can_castle_kingside, self.r_start, self.c_start, self.r_end, self.c_end, self.board) == 'queenside':
+            self.board[self.r_start, self.c_start] = config.EMPTY
+            self.board[self.r_start, self.c_start-4] = config.EMPTY
+            if self.player == config.PLAYER_1:
+                self.board[self.r_start, self.c_start-1] = config.W_KING_ROOK
+            elif self.player == config.PLAYER_2:
+                self.board[self.r_start, self.c_start-1] = config.B_KING_ROOK
+            self.board[self.r_end, self.c_end] = self.piece
+            return self.board, True
+
         else:
             return self.board, False

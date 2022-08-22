@@ -1,7 +1,7 @@
 PLAYER_1 = 'White'
-PLAYER_1_PIECES = ['WP0', 'WN0', 'WB0', 'WRK', 'WRQ', 'WQ0', 'WK0']
+PLAYER_1_PIECES = ['WP0', 'WN0', 'WB0', 'WKR', 'WQR', 'WQ0', 'WK0']
 PLAYER_2 = 'Black'
-PLAYER_2_PIECES = ['BP0', 'BN0', 'BB0', 'BRK', 'BRQ', 'BQ0', 'BK0']
+PLAYER_2_PIECES = ['BP0', 'BN0', 'BB0', 'BKR', 'BQR', 'BQ0', 'BK0']
 EMPTY = '000'
 RANKS = 8
 FILES = 8
