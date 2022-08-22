@@ -50,8 +50,10 @@ def create_board():
             if n_row == 1:
                 board[n_row, ele] = config.W_PAWN
             elif n_row == 0:
-                if ele == 0 or ele == 7:
-                    board[n_row, ele] = config.W_ROOK
+                if ele == 7:
+                    board[n_row, ele] = config.W_KING_ROOK
+                elif ele == 0:
+                    board[n_row, ele] = config.W_QUEEN_ROOK
                 elif ele == 1 or ele == 6:
                     board[n_row, ele] = config.W_KNIGHT
                 elif ele == 2 or ele == 5:
@@ -64,8 +66,10 @@ def create_board():
             if n_row == 6:
                 board[n_row, ele] = config.B_PAWN
             elif n_row == 7:
-                if ele == 0 or ele == 7:
-                    board[n_row, ele] = config.B_ROOK
+                if ele == 7:
+                    board[n_row, ele] = config.B_KING_ROOK
+                elif ele == 0:
+                    board[n_row, ele] = config.B_QUEEN_ROOK
                 elif ele == 1 or ele == 6:
                     board[n_row, ele] = config.B_KNIGHT
                 elif ele == 2 or ele == 5:
@@ -77,13 +81,20 @@ def create_board():
 
     return np.flip(board, 0)
 
-def draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c):
+def draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c):
     for r in range(config.RANKS):
         for c in range(config.FILES):
-            if (c+r)%2 == 0:
-                pygame.draw.rect(screen, LIGHT_SQUARES, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
-            elif (c+r)%2 != 0:
-                pygame.draw.rect(screen, DARK_SQUARES, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
+            if c != curr_piece_c and r != curr_piece_r:
+                if (c+r)%2 == 0:
+                    pygame.draw.rect(screen, LIGHT_SQUARES, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
+                elif (c+r)%2 != 0:
+                    pygame.draw.rect(screen, DARK_SQUARES, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
+
+            elif move_piece and c == curr_piece_c and r == curr_piece_r:
+                pygame.draw.rect(screen, SELECTED_COLOR, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
+
+            # elif prev_move_piece and c == curr_piece_c and r == curr_piece_r:
+            #     pygame.draw.rect(screen, SELECTED_COLOR, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
 
             if board[r, c] == config.W_PAWN:
                 target_rect = w_pawn_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
@@ -94,7 +105,10 @@ def draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_pi
             elif board[r, c] == config.W_BISHOP:
                 target_rect = w_bishop_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
                 screen.blit(w_bishop_image, target_rect)
-            elif board[r, c] == config.W_ROOK:
+            elif board[r, c] == config.W_KING_ROOK:
+                target_rect = w_rook_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
+                screen.blit(w_rook_image, target_rect)
+            elif board[r, c] == config.W_QUEEN_ROOK:
                 target_rect = w_rook_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
                 screen.blit(w_rook_image, target_rect)
             elif board[r, c] == config.W_QUEEN:
@@ -113,7 +127,10 @@ def draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_pi
             elif board[r, c] == config.B_BISHOP:
                 target_rect = b_bishop_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
                 screen.blit(b_bishop_image, target_rect)
-            elif board[r, c] == config.B_ROOK:
+            elif board[r, c] == config.B_KING_ROOK:
+                target_rect = b_rook_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
+                screen.blit(b_rook_image, target_rect)
+            elif board[r, c] == config.B_QUEEN_ROOK:
                 target_rect = b_rook_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
                 screen.blit(b_rook_image, target_rect)
             elif board[r, c] == config.B_QUEEN:
@@ -122,11 +139,6 @@ def draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_pi
             elif board[r, c] == config.B_KING:
                 target_rect = b_king_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
                 screen.blit(b_king_image, target_rect)
-
-    if valid_piece_selection:
-        pygame.draw.rect(screen, SELECTED_COLOR, (curr_piece_c*SQUARESIZE, curr_piece_r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
-    else:
-        pass
 
     pygame.display.update()
 
@@ -151,135 +163,86 @@ def main():
     prev_empty_c = np.nan
 
     turn_counter = 0
-    temp_turn_counter = -1
-    turn_start_loop = True
-    clear_board_loop = False
+    turn_start = True
     game_over = False
+
+    white_can_castle_queenside = True
+    white_can_castle_kingside = True
+    black_can_castle_queenside = True
+    black_can_castle_kingside = True
+
+    select_piece = True
+    move_piece = False
+    prev_move_piece = False
     mouse_click_1 = False
     mouse_click_2 = False
-    move_loop = False
+    move_check = False
 
-    while not game_over: # continue playing until checkmate is reached or the game is quit
-        if not clear_board_loop:
-            if temp_turn_counter < turn_counter:
-                print(board)
-                draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
-                pygame.display.update()
-                temp_turn_counter = turn_counter
-        else:
-            pass
+    while not game_over:
+        if turn_start:
+            print(board)
+            draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
+            pygame.display.update()
+
+            # setting our player based on turn
+            if turn_counter % 2 == 0:
+                player = config.PLAYER_1
+            elif turn_counter % 2 != 0:
+                player = config.PLAYER_2
+
+            if check.is_check(player, board):
+                if check.is_game_over(player, board):
+                    if player == config.PLAYER_1:
+                        winning_player = config.PLAYER_2
+                        game_over = True
+                    elif player == config.PLAYER_2:
+                        winning_player = config.PLAYER_1
+                        game_over = True
+                    print(f'{winning_player} wins!')
+
+            elif not check.is_check(player, board):
+                if check.is_game_over(player, board):
+                    game_over = True
+                    print('stalemate')
+                else:
+                    print(f'It is {player}\'s turn...')
+                    turn_start = False
+
+        if player == config.PLAYER_1:
+            valid_pieces = config.PLAYER_1_PIECES
+        elif player == config.PLAYER_2:
+            valid_pieces = config.PLAYER_2_PIECES
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-            if turn_start_loop:
-                turn_start_loop = False
-
-                selection_loop = True
-                mouse_click_1 = False
-                mouse_click_2 = False
-
-                valid_piece_selection = False
-
-                valid_move_selection = False
-
-                move_check = False
-
-                clear_board_loop = False
-
-                r_start = np.nan
-                c_start = np.nan
-                r_end = np.nan
-                c_end = np.nan
-
-                # setting our player based on turn
-                if turn_counter % 2 == 0:
-                    player = config.PLAYER_1
-                elif turn_counter % 2 != 0:
-                    player = config.PLAYER_2
-
-                if check.is_check(player, board):
-                    if check.is_game_over(player, board):
-                        if player == config.PLAYER_1:
-                            winning_player = config.PLAYER_2
-                            game_over = True
-                        elif player == config.PLAYER_2:
-                            winning_player = config.PLAYER_1
-                            game_over = True
-                        print(f'{winning_player} wins!')
-
-                elif not check.is_check(player, board):
-                    if check.is_game_over(player, board):
-                        game_over = True
-                        print('stalemate')
-                    else:
-                        print(f'It is {player}\'s turn...')
-                        break
-
-
-            # while clear_board_loop:
-            #     print('clear board?')
-            #     valid_piece_selection = False
-            #     clear_board_loop = False
-            #     selection_loop = True
-            #     curr_piece_r = np.nan
-            #     curr_piece_c = np.nan
-            #     prev_piece_r = np.nan
-            #     prev_piece_c = np.nan
-            #     prev_empty_r = np.nan
-            #     prev_empty_c = np.nan
-            #     draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
-            #     pygame.display.update()
-            #     break
-
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if selection_loop:
-                    if not valid_piece_selection:
-                        print('clicking?')
-                        print('mouse?')
-                        x_pos = event.pos[0]
-                        y_pos = event.pos[1]
-                        c_start = int(x_pos//SQUARESIZE)
-                        r_start = int(y_pos//SQUARESIZE)
-                        mouse_click_1 = True
+                if select_piece:
+                    x_pos = event.pos[0]
+                    y_pos = event.pos[1]
+                    c_start = int(x_pos//SQUARESIZE)
+                    r_start = int(y_pos//SQUARESIZE)
+                    mouse_click_1 = True
+                    select_piece = False
 
-                if move_loop:
+                if move_piece:
                     x_pos = event.pos[0]
                     y_pos = event.pos[1]
                     c_end = int(x_pos//SQUARESIZE)
                     r_end = int(y_pos//SQUARESIZE)
                     mouse_click_2 = True
+                    move_piece = False
 
             if mouse_click_1:
-                print('click1?')
                 selected_piece = board[r_start, c_start]
                 if selected_piece in config.PLAYER_1_PIECES or selected_piece in config.PLAYER_2_PIECES:
-                    valid_piece_selection = True
+                    move_piece = True
+                    mouse_click_1 = False
                     curr_piece_c = c_start
                     curr_piece_r = r_start
-                    draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
+                    draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
                     pygame.display.update()
-
-            if valid_piece_selection and player == config.PLAYER_1:
-                valid_pieces = config.PLAYER_1_PIECES
-            elif valid_piece_selection and player == config.PLAYER_2:
-                valid_pieces = config.PLAYER_2_PIECES
-
-            if valid_piece_selection:
-                if selected_piece in valid_pieces:
-                    print('selected')
-                    move_loop = True
-                    selection_loop = False
-                    mouse_click_1 = False
-
-                else:
-                    print('else')
-                    valid_piece_selection = False
-                    move_loop = False
-                    selection_loop = True
-                    mouse_click_1 = False
-                    # clear_board_loop = True
 
             if turn_counter == 0: # creating initial values for previous moved pieces to check for en passant
                 prev_r_delta=0
@@ -287,38 +250,91 @@ def main():
                 prev_moved_piece=config.EMPTY
 
             if mouse_click_2:
-                print('click2?')
-                # instiatiating the class for the piece selected
-                if board[r_start, c_start] == config.W_PAWN or board[r_start, c_start] == config.B_PAWN:
-                    piece_move = cp.Pawn(board, player, prev_r_delta, prev_c_end, prev_moved_piece)
-                elif board[r_start, c_start] == config.W_KNIGHT or board[r_start, c_start] == config.B_KNIGHT:
-                    piece_move = cp.Knight(board, player)
-                elif board[r_start, c_start] == config.W_BISHOP or board[r_start, c_start] == config.B_BISHOP:
-                    piece_move = cp.Bishop(board, player)
-                elif board[r_start, c_start] == config.W_ROOK or board[r_start, c_start] == config.B_ROOK:
-                    piece_move = cp.Rook(board, player)
-                elif board[r_start, c_start] == config.W_QUEEN or board[r_start, c_start] == config.B_QUEEN:
-                    piece_move = cp.Queen(board, player)
-                elif board[r_start, c_start] == config.W_KING or board[r_start, c_start] == config.B_KING:
-                    piece_move = cp.King(board, player)
+                if player == config.PLAYER_1:
+                    if selected_piece == config.W_PAWN:
+                        piece_move = cp.Pawn(board, player, prev_r_delta, prev_c_end, prev_moved_piece)
+                    elif selected_piece == config.W_KNIGHT:
+                        piece_move = cp.Knight(board, player)
+                    elif selected_piece == config.W_BISHOP:
+                        piece_move = cp.Bishop(board, player)
+                    elif selected_piece == config.W_KING_ROOK:
+                        piece_move = cp.Rook(board, player, piece)
+                    elif selected_piece == config.W_QUEEN_ROOK:
+                        piece_move = cp.Rook(board, player, piece)
+                    elif selected_piece == config.W_QUEEN:
+                        piece_move = cp.Queen(board, player)
+                    elif selected_piece == config.W_KING:
+                        piece_move = cp.King(board, player, white_can_castle_queenside, white_can_castle_kingside, ischeck)
 
-                board, move_check = piece_move.move(r_start, c_start, r_end, c_end)
+                    if selected_piece in valid_pieces:
+                        board, move_check = piece_move.move(r_start, c_start, r_end, c_end)
+                        if move_check and selected_piece == config.W_QUEEN_ROOK:
+                            white_can_castle_queenside = False
+                        elif move_check and selected_piece == config.W_KING_ROOK:
+                            white_can_castle_kingside = False
+                    else:
+                        move_check = False
+
+
+                elif player == config.PLAYER_2:
+                    if selected_piece == config.B_PAWN:
+                        piece_move = cp.Pawn(board, player, prev_r_delta, prev_c_end, prev_moved_piece)
+                    elif selected_piece == config.B_KNIGHT:
+                        piece_move = cp.Knight(board, player)
+                    elif selected_piece == config.B_BISHOP:
+                        piece_move = cp.Bishop(board, player)
+                    elif selected_piece == config.B_KING_ROOK:
+                        piece_move = cp.Rook(board, player, piece)
+                    elif selected_piece == config.B_QUEEN_ROOK:
+                        piece_move = cp.Rook(board, player, piece)
+                    elif selected_piece == config.B_QUEEN:
+                        piece_move = cp.Queen(board, player)
+                    elif selected_piece == config.B_KING:
+                        piece_move = cp.King(board, player, black_can_castle_queenside, black_can_castle_kingside)
+
+                    if selected_piece in valid_pieces:
+                        board, move_check = piece_move.move(r_start, c_start, r_end, c_end)
+                        if move_check and selected_piece == config.B_QUEEN_ROOK:
+                            black_can_castle_queenside = False
+                        elif move_check and selected_piece == config.B_KING_ROOK:
+                            black_can_castle_kingside = False
+                    else:
+                        move_check = False
+
 
             if move_check and mouse_click_2: # if the move is valid then go to the next player
                 prev_r_delta = abs(r_end - r_start)
                 prev_c_end = c_end
                 prev_moved_piece = selected_piece
                 turn_counter += 1
+
+                turn_start = True
+                select_piece = True
                 mouse_click_2 = False
-                turn_start_loop = True
-                move_loop = False
+                prev_move_piece = True
+
+                curr_piece_r = np.nan
+                curr_piece_c = np.nan
+                prev_piece_r = r_end
+                prev_piece_c = c_end
+                prev_empty_r = curr_piece_r
+                prev_empty_c = curr_piece_c
+                draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
+                pygame.display.update()
 
             elif not move_check and mouse_click_2: # if the move is not valid then ask for a move from the same player
-                clear_board_loop = True
-                valid_piece_selection = False
-                mouse_click_2 = False
                 turn_start_loop = False
-                move_loop = False
+                select_piece = True
+                mouse_click_2 = False
+
+                curr_piece_r = np.nan
+                curr_piece_c = np.nan
+                prev_piece_r = np.nan
+                prev_piece_c = np.nan
+                prev_empty_r = np.nan
+                prev_empty_c = np.nan
+                draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
+                pygame.display.update()
 
 
 if __name__ == '__main__':

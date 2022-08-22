@@ -42,7 +42,7 @@ def is_check(player, board):
             else:
                 pass
 
-        piece = config.B_ROOK
+        piece = config.B_QUEEN_ROOK
         rook_index = np.where(board == piece) # rook check
         r_rook = list(rook_index[0])
         c_rook = list(rook_index[1])
@@ -51,6 +51,17 @@ def is_check(player, board):
                 return True
             else:
                 pass
+
+        piece = config.B_KING_ROOK
+        rook_index = np.where(board == piece) # rook check
+        r_rook = list(rook_index[0])
+        c_rook = list(rook_index[1])
+        for r_start, c_start in zip(r_rook, c_rook):
+            if pm.is_valid_rook_move(piece, config.PLAYER_2, r_start, c_start, r_king, c_king, board):
+                return True
+            else:
+                pass
+
 
         piece = config.B_QUEEN
         queen_index = np.where(board == piece) # rook check
@@ -67,7 +78,7 @@ def is_check(player, board):
         r_king_b = list(king_index[0])
         c_king_b = list(king_index[1])
         for r_start, c_start in zip(r_king_b, c_king_b):
-            if pm.is_valid_king_move(piece, config.PLAYER_2, r_start, c_start, r_king, c_king, board):
+            if pm.is_valid_king_move(piece, config.PLAYER_2, can_castle_queenside, can_castle_kingside, r_start, c_start, r_king, c_king, board, ischeck):
                 return True
             else:
                 pass
@@ -110,7 +121,17 @@ def is_check(player, board):
             else:
                 pass
 
-        piece = config.W_ROOK
+        piece = config.W_QUEEN_ROOK
+        rook_index = np.where(board == piece) # rook check
+        r_rook = list(rook_index[0])
+        c_rook = list(rook_index[1])
+        for r_start, c_start in zip(r_rook, c_rook):
+            if pm.is_valid_rook_move(piece, config.PLAYER_1, r_start, c_start, r_king, c_king, board):
+                return True
+            else:
+                pass
+
+        piece = config.W_KING_ROOK
         rook_index = np.where(board == piece) # rook check
         r_rook = list(rook_index[0])
         c_rook = list(rook_index[1])
@@ -135,7 +156,7 @@ def is_check(player, board):
         r_king_w = list(king_index[0])
         c_king_w = list(king_index[1])
         for r_start, c_start in zip(r_king_w, c_king_w):
-            if pm.is_valid_king_move(piece, config.PLAYER_1, r_start, c_start, r_king, c_king, board):
+            if pm.is_valid_king_move(piece, config.PLAYER_1, can_castle_queenside, can_castle_kingside, r_start, c_start, r_king, c_king, board, ischeck):
                 return True
             else:
                 pass
@@ -276,7 +297,62 @@ def is_game_over(player, board):
                     pass
 
         # rook check
-        piece = config.W_ROOK
+        piece = config.W_QUEEN_ROOK
+        rook_index = np.where(board == piece)
+        r_rook = list(rook_index[0])
+        c_rook = list(rook_index[1])
+        for r_start, c_start in zip(r_rook, c_rook):
+            for i in range(config.RANKS):
+                if pm.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start+i, board):
+                    try:
+                        t_board = board.copy()
+                        t_board[r_start, c_start] = config.EMPTY
+                        t_board[r_start, c_start+c] = piece
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
+                        else:
+                            pass
+                    except:
+                        pass
+                elif pm.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start-i, board):
+                    try:
+                        t_board = board.copy()
+                        t_board[r_start, c_start] = config.EMPTY
+                        t_board[r_start, c_start-i] = piece
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
+                        else:
+                            pass
+                    except IndexError:
+                        pass
+                elif pm.is_valid_rook_move(piece, player, r_start, c_start, r_start+i, c_start, board):
+                    try:
+                        t_board = board.copy()
+                        t_board[r_start, c_start] = config.EMPTY
+                        t_board[r_start+r, c_start+c] = piece
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
+                        else:
+                            pass
+                    except IndexError:
+                        pass
+                elif pm.is_valid_rook_move(piece, player, r_start, c_start, r_start-i, c_start, board):
+                    try:
+                        t_board = board.copy()
+                        t_board[r_start, c_start] = config.EMPTY
+                        t_board[r_start+r, c_start+c] = piece
+                        if config.W_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
+                    except IndexError:
+                        pass
+                else:
+                    pass
+
+        piece = config.W_KING_ROOK
         rook_index = np.where(board == piece)
         r_rook = list(rook_index[0])
         c_rook = list(rook_index[1])
@@ -398,7 +474,7 @@ def is_game_over(player, board):
         for r_start, c_start in zip(r_king, c_king):
             for r in range(config.RANKS):
                 for c in range(config.FILES):
-                    if pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start+c, board):
+                    if pm.is_valid_king_move(piece, player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_start+r, c_start+c, board, ischeck):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -410,7 +486,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start-c, board):
+                    elif pm.is_valid_king_move(piece, player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_start+r, c_start-c, board, ischeck):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -422,7 +498,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start+c, board):
+                    elif pm.is_valid_king_move(piece, player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_start-r, c_start+c, board, ischeck):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -434,7 +510,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start-c, board):
+                    elif pm.is_valid_king_move(piece, player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_start-r, c_start-c, board, ischeck):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -586,7 +662,64 @@ def is_game_over(player, board):
                     pass
 
         # rook check
-        piece = config.B_ROOK
+        piece = config.B_QUEEN_ROOK
+        rook_index = np.where(board == piece)
+        r_rook = list(rook_index[0])
+        c_rook = list(rook_index[1])
+        for r_start, c_start in zip(r_rook, c_rook):
+            for i in range(config.RANKS):
+                if pm.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start+i, board):
+                    try:
+                        t_board = board.copy()
+                        t_board[r_start, c_start] = config.EMPTY
+                        t_board[r_start, c_start+i] = piece
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
+                        else:
+                            pass
+                    except IndexError:
+                        pass
+                elif pm.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start-i, board):
+                    try:
+                        t_board = board.copy()
+                        t_board[r_start, c_start] = config.EMPTY
+                        t_board[r_start, c_start-i] = piece
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
+                        else:
+                            pass
+                    except IndexError:
+                        pass
+                elif pm.is_valid_rook_move(piece, player, r_start, c_start, r_start+i, c_start, board):
+                    try:
+                        t_board = board.copy()
+                        t_board[r_start, c_start] = config.EMPTY
+                        t_board[r_start+i, c_start] = piece
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
+                        else:
+                            pass
+                    except IndexError:
+                        pass
+                elif pm.is_valid_rook_move(piece, player, r_start, c_start, r_start-i, c_start, board):
+                    try:
+                        t_board = board.copy()
+                        t_board[r_start, c_start] = config.EMPTY
+                        t_board[r_start-i, ] = piece
+                        if config.B_KING in t_board:
+                            if not is_check(player, t_board):
+                                return False
+                        else:
+                            pass
+                    except IndexError:
+                        pass
+                else:
+                    pass
+
+        piece = config.B_QUEEN_ROOK
         rook_index = np.where(board == piece)
         r_rook = list(rook_index[0])
         c_rook = list(rook_index[1])
@@ -710,7 +843,7 @@ def is_game_over(player, board):
         for r_start, c_start in zip(r_king, c_king):
             for r in range(config.RANKS):
                 for c in range(config.FILES):
-                    if pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start+c, board):
+                    if pm.is_valid_king_move(piece, player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_start+r, c_start+c, board, ischeck):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -722,7 +855,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start-c, board):
+                    elif pm.is_valid_king_move(piece, player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_start+r, c_start-c, board, ischeck):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -734,7 +867,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start+c, board):
+                    elif pm.is_valid_king_move(piece, player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_start-r, c_start+c, board, ischeck):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
@@ -746,7 +879,7 @@ def is_game_over(player, board):
                                 pass
                         except IndexError:
                             pass
-                    elif pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start-c, board):
+                    elif pm.is_valid_king_move(piece, player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_start-r, c_start-c, board, ischeck):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
