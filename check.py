@@ -9,8 +9,6 @@ prev_moved_piece = config.EMPTY
 def is_check(player, board):
     if player == config.PLAYER_1:
         index_king = np.where(board == config.W_KING)
-        print('index_king: ', index_king)
-
         r_king = int(index_king[0])
         c_king = int(index_king[1])
 
@@ -90,7 +88,6 @@ def is_check(player, board):
     if player == config.PLAYER_2:
         # checking if config.PLAYER_2's king is in check
         index_king = np.where(board == config.B_KING)
-        print('index_king: ', index_king)
         r_king = int(index_king[0])
         c_king = int(index_king[1])
 

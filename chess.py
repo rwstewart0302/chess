@@ -166,6 +166,8 @@ def main():
     turn_start = True
     game_over = False
 
+    board_states = [board]
+
     white_can_castle_queenside = True
     white_can_castle_kingside = True
     black_can_castle_queenside = True
@@ -180,6 +182,17 @@ def main():
 
     while not game_over:
         if turn_start:
+            if turn_counter > 0:
+                three_fold_repition = 0
+                for board_state in board_states:
+                    if np.all(board == board_state):
+                        print('reps: ', three_fold_repition)
+                if three_fold_repition == 2:
+                    game_over = True
+                    print('Threefold Repition Draw!')
+                else:
+                    board_states.append(board)
+
             print(board)
             draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
             pygame.display.update()
