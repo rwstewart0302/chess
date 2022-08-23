@@ -257,23 +257,27 @@ class King:
                 return self.board, True
 
         elif cm.is_valid_castle(self.player, self.can_castle_queenside, self.can_castle_kingside, self.r_start, self.c_start, self.r_end, self.c_end, self.board) == 'kingside':
-            self.board[self.r_start, self.c_start] = config.EMPTY
-            self.board[self.r_start, self.c_start+3] = config.EMPTY
+            self.temp_board[self.r_start, self.c_start] = config.EMPTY
+            self.temp_board[self.r_start, self.c_start+3] = config.EMPTY
             if self.player == config.PLAYER_1:
-                self.board[self.r_start, self.c_start+1] = config.W_KING_ROOK
+                self.temp_board[self.r_start, self.c_start+1] = config.W_KING_ROOK
             elif self.player == config.PLAYER_2:
-                self.board[self.r_start, self.c_start+1] = config.B_KING_ROOK
-            self.board[self.r_end, self.c_end] = self.piece
+                self.temp_board[self.r_start, self.c_start+1] = config.B_KING_ROOK
+            self.temp_board[self.r_end, self.c_end] = self.piece
+
+            self.board = self.temp_board
             return self.board, True
 
         elif cm.is_valid_castle(self.player, self.can_castle_queenside, self.can_castle_kingside, self.r_start, self.c_start, self.r_end, self.c_end, self.board) == 'queenside':
-            self.board[self.r_start, self.c_start] = config.EMPTY
-            self.board[self.r_start, self.c_start-4] = config.EMPTY
+            self.temp_board[self.r_start, self.c_start] = config.EMPTY
+            self.temp_board[self.r_start, self.c_start-4] = config.EMPTY
             if self.player == config.PLAYER_1:
-                self.board[self.r_start, self.c_start-1] = config.W_KING_ROOK
+                self.temp_board[self.r_start, self.c_start-1] = config.W_KING_ROOK
             elif self.player == config.PLAYER_2:
-                self.board[self.r_start, self.c_start-1] = config.B_KING_ROOK
-            self.board[self.r_end, self.c_end] = self.piece
+                self.temp_board[self.r_start, self.c_start-1] = config.B_KING_ROOK
+            self.temp_board[self.r_end, self.c_end] = self.piece
+
+            self.board = self.temp_board
             return self.board, True
 
         else:

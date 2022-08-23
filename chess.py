@@ -161,7 +161,7 @@ def main():
     prev_empty_c = np.nan
 
     turn_counter = 0
-    temp_turn_counter = -1
+    three_fold_repition = 0
     turn_start = True
     game_over = False
 
@@ -182,38 +182,18 @@ def main():
     while not game_over:
         if turn_start:
             king_draw_check = 1
+            three_fold_repition = 0
 
-            # if turn_counter > 0:
-            #     if turn_counter > temp_turn_counter:
-            #         three_fold_repition = 0
-            #         for board_state in board_states:
-            #             three_fold_check = 0
-            #             for row1, row2 in zip(board_state, board):
-            #                 for ele1, ele2 in zip(row1, row2):
-            #                     if ele1 != ele2:
-            #                         three_fold_check = 1
-            #                     else:
-            #                         pass
-            #             if three_fold_check == 0:
-            #                 three_fold_repition += 1
-            #             elif three_fold_check == 1:
-            #                 pass
-            #
-            #             if three_fold_repition == 2:
-            #                 game_over = True
-            #                 print('Threefold Repition Draw!')
-            #         #     if np.all(board == board_state):
-            #         #         print('board: \n \n', board)
-            #         #         print('board_state: ', board_state)
-            #         #         print()
-            #         #         print()
-            #         #         three_fold_repition += 1
-            #         # if three_fold_repition == 2:
-            #         #     game_over = True
-            #         #     print('Threefold Repition Draw!')
-            #         temp_turn_counter = turn_counter
-            #     if turn_counter == temp_turn_counter:
-            #         board_states.append(board)
+            if turn_counter > 0:
+                for board_state in board_states:
+                    if np.all(board == board_state):
+                        three_fold_repition += 1
+                    else:
+                        pass
+
+            if three_fold_repition == 3:
+                game_over = True
+                print('Threefold Repition Draw!')
 
             for row in board:
                 for piece in row:
@@ -224,7 +204,6 @@ def main():
                 game_over = True
                 print('King\'s Only Stalemate!')
 
-            print(board)
             draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
             pygame.display.update()
 
@@ -384,6 +363,7 @@ def main():
                 prev_c_end = c_end
                 prev_moved_piece = selected_piece
                 turn_counter += 1
+                board_states.append(board)
 
                 turn_start = True
                 select_piece = True
