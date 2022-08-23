@@ -1,5 +1,4 @@
 import config, check
-
 import numpy as np
 
 def is_valid_castle(player, can_castle_queenside, can_castle_kingside, r_start, c_start, r_end, c_end, board):
@@ -18,23 +17,66 @@ def is_valid_castle(player, can_castle_queenside, can_castle_kingside, r_start, 
         c_king = int(index_king[1])
 
     if c_start - 2 == c_end and r_start == r_end and can_castle_queenside:
-        for i in range(1, 3):
-            temp_board[r_king, c_king-(i-1)] = config.EMPTY
+        if (
+        temp_board[r_king, c_king-1] == config.EMPTY and
+        temp_board[r_king, c_king-2] == config.EMPTY and
+        temp_board[r_king, c_king-3] == config.EMPTY and
+        (temp_board[r_king, c_king-4] == config.W_QUEEN_ROOK or temp_board[r_king, c_king-4] == config.B_QUEEN_ROOK)
+        ):
+            temp_board[r_king, c_king] = config.EMPTY
+            temp_board[r_king, c_king-4] = config.EMPTY
             if player == config.PLAYER_1:
-                temp_board[r_king, c_king-i] = config.W_KING
+                temp_board[r_king, c_king-1] = config.W_KING
+                if check.is_check(player, temp_board):
+                    return False
+                else:
+                    temp_board[r_king, c_king-1] = config.EMPTY
+                    temp_board[r_king, c_king-2] = config.W_KING
+                    if check.is_check(player, temp_board):
+                        return False
+                    else:
+                        return 'queenside'
             elif player == config.PLAYER_2:
-                temp_board[r_king, c_king-i] = config.B_KING
-            if check.is_check(player, temp_board):
-                return False
-        return 'queenside'
+                temp_board[r_king, c_king-1] = config.B_KING
+                if check.is_check(player, temp_board):
+                    return False
+                else:
+                    temp_board[r_king, c_king-1] = config.EMPTY
+                    temp_board[r_king, c_king-2] = config.B_KING
+                    if check.is_check(player, temp_board):
+                        return False
+                    else:
+                        return 'queenside'
 
     elif c_start + 2 == c_end and r_start == r_end and can_castle_kingside:
-        for i in range(1, 3):
-            temp_board[r_king, c_king+(i-1)] = config.EMPTY
+        if (
+        temp_board[r_king, c_king+1] == config.EMPTY and
+        temp_board[r_king, c_king+2] == config.EMPTY and
+        (temp_board[r_king, c_king+3] == config.W_KING_ROOK or temp_board[r_king, c_king+3] == config.B_KING_ROOK)
+        ):
+            temp_board[r_king, c_king] = config.EMPTY
+            temp_board[r_king, c_king+3] = config.EMPTY
             if player == config.PLAYER_1:
-                temp_board[r_king, c_king+i] = config.W_KING
+                temp_board[r_king, c_king+1] = config.W_KING
+                if check.is_check(player, temp_board):
+                    return False
+                else:
+                    temp_board[r_king, c_king+1] = config.EMPTY
+                    temp_board[r_king, c_king+2] = config.W_KING
+                    if check.is_check(player, temp_board):
+                        return False
+                    else:
+                        return 'kingside'
             elif player == config.PLAYER_2:
-                temp_board[r_king, c_king+i] = config.B_KING
-            if check.is_check(player, temp_board):
-                return False
-        return 'kingside'
+                temp_board[r_king, c_king+1] = config.B_KING
+                if check.is_check(player, temp_board):
+                    return False
+                else:
+                    temp_board[r_king, c_king+1] = config.EMPTY
+                    temp_board[r_king, c_king+2] = config.B_KING
+                    if check.is_check(player, temp_board):
+                        return False
+                    else:
+                        return 'kingside'
+
+    return False

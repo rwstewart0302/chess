@@ -147,8 +147,6 @@ def draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, p
 ### - ADD SOME PRINT STATEMENTS FOR INVALID PIECE SELECTIONS
 ### - CLEANUP MAIN FILE ---> MAKE VARIABLES AND LOOPS MORE READABLE
 ### - DEFINE CHESS_BOARD.PY FUNCTION TO HANDLE PYGAME STUFF
-### - GIVE A CONDITION TO PIECE_MOVEMENT.PY FOR CASTLING AND STALEMATE!!!
-### - DONT FORGET KING/KING STALEMATE AND THREEFOLD REPITION
 
 def main():
     player = config.PLAYER_1
@@ -163,6 +161,7 @@ def main():
     prev_empty_c = np.nan
 
     turn_counter = 0
+    temp_turn_counter = -1
     turn_start = True
     game_over = False
 
@@ -184,20 +183,41 @@ def main():
         if turn_start:
             king_draw_check = 1
 
-            if turn_counter > 0:
-                three_fold_repition = 0
-                for board_state in board_states:
-                    if np.all(board == board_state):
-                        print('reps: ', three_fold_repition)
-                if three_fold_repition == 2:
-                    game_over = True
-                    print('Threefold Repition Draw!')
-                else:
-                    board_states.append(board)
+            # if turn_counter > 0:
+            #     if turn_counter > temp_turn_counter:
+            #         three_fold_repition = 0
+            #         for board_state in board_states:
+            #             three_fold_check = 0
+            #             for row1, row2 in zip(board_state, board):
+            #                 for ele1, ele2 in zip(row1, row2):
+            #                     if ele1 != ele2:
+            #                         three_fold_check = 1
+            #                     else:
+            #                         pass
+            #             if three_fold_check == 0:
+            #                 three_fold_repition += 1
+            #             elif three_fold_check == 1:
+            #                 pass
+            #
+            #             if three_fold_repition == 2:
+            #                 game_over = True
+            #                 print('Threefold Repition Draw!')
+            #         #     if np.all(board == board_state):
+            #         #         print('board: \n \n', board)
+            #         #         print('board_state: ', board_state)
+            #         #         print()
+            #         #         print()
+            #         #         three_fold_repition += 1
+            #         # if three_fold_repition == 2:
+            #         #     game_over = True
+            #         #     print('Threefold Repition Draw!')
+            #         temp_turn_counter = turn_counter
+            #     if turn_counter == temp_turn_counter:
+            #         board_states.append(board)
 
             for row in board:
                 for piece in row:
-                    if piece != config.W_KING or piece != config.B_KING or piece != config.EMPTY:
+                    if piece not in [config.W_KING, config.B_KING, config.EMPTY]:
                         king_draw_check = 0
 
             if king_draw_check == 1:
@@ -214,19 +234,22 @@ def main():
             elif turn_counter % 2 != 0:
                 player = config.PLAYER_2
 
-            print('is check: ', check.is_check(player, board))
-            if check.is_check(player, board):
-                print('is_checkmate?: ', check.is_game_over(player, board))
+            if check.is_check(player, board) and not game_over:
                 if check.is_game_over(player, board):
                     if player == config.PLAYER_1:
                         winning_player = config.PLAYER_2
                         game_over = True
+                        print(f'{winning_player} wins!')
                     elif player == config.PLAYER_2:
                         winning_player = config.PLAYER_1
                         game_over = True
-                    print(f'{winning_player} wins!')
+                        print(f'{winning_player} wins!')
+                elif not check.is_game_over(player, board):
+                        turn_start = False
 
-            elif not check.is_check(player, board):
+
+
+            elif not check.is_check(player, board) and not game_over:
                 if check.is_game_over(player, board):
                     game_over = True
                     print('stalemate')
