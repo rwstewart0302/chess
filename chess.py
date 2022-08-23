@@ -2,7 +2,6 @@ import pygame, sys, check, config
 
 import numpy as np
 import chess_pieces as cp
-import chess_board as cb
 
 SQUARESIZE = 100 # pixels per square
 
@@ -93,10 +92,7 @@ def draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, p
             elif move_piece and c == curr_piece_c and r == curr_piece_r:
                 pygame.draw.rect(screen, SELECTED_COLOR, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
 
-            # elif prev_move_piece and c == curr_piece_c and r == curr_piece_r:
-            #     pygame.draw.rect(screen, SELECTED_COLOR, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
-
-            if board[r, c] == config.W_PAWN:
+            elif board[r, c] == config.W_PAWN:
                 target_rect = w_pawn_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
                 screen.blit(w_pawn_image, target_rect)
             elif board[r, c] == config.W_KNIGHT:
@@ -144,8 +140,6 @@ def draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, p
 
 ### TODO:
 ### - CLEANOUT ALL PRINTS AND INPUTS WHEN PYGAME IS IMPLEMENTED
-### - ADD SOME PRINT STATEMENTS FOR INVALID PIECE SELECTIONS
-### - CLEANUP MAIN FILE ---> MAKE VARIABLES AND LOOPS MORE READABLE
 ### - DEFINE CHESS_BOARD.PY FUNCTION TO HANDLE PYGAME STUFF
 
 def main():
