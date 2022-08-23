@@ -182,7 +182,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start+c] = piece
                             if config.W_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -194,7 +194,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start-c] = piece
                             if config.W_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -307,7 +307,7 @@ def is_game_over(player, board):
                     try:
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
-                        t_board[r_start, c_start+c] = piece
+                        t_board[r_start, c_start+i] = piece
                         if config.W_KING in t_board:
                             if not is_check(player, t_board):
                                 return False
@@ -331,7 +331,7 @@ def is_game_over(player, board):
                     try:
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
-                        t_board[r_start+r, c_start+c] = piece
+                        t_board[r_start+i, c_start] = piece
                         if config.W_KING in t_board:
                             if not is_check(player, t_board):
                                 return False
@@ -343,7 +343,7 @@ def is_game_over(player, board):
                     try:
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
-                        t_board[r_start+r, c_start+c] = piece
+                        t_board[r_start-i, c_start] = piece
                         if config.W_KING in t_board:
                             if not is_check(player, t_board):
                                 return False
@@ -362,7 +362,7 @@ def is_game_over(player, board):
                     try:
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
-                        t_board[r_start, c_start+c] = piece
+                        t_board[r_start, c_start+i] = piece
                         if config.W_KING in t_board:
                             if not is_check(player, t_board):
                                 return False
@@ -386,7 +386,7 @@ def is_game_over(player, board):
                     try:
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
-                        t_board[r_start+r, c_start+c] = piece
+                        t_board[r_start+i, c_start] = piece
                         if config.W_KING in t_board:
                             if not is_check(player, t_board):
                                 return False
@@ -398,7 +398,7 @@ def is_game_over(player, board):
                     try:
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
-                        t_board[r_start+r, c_start+c] = piece
+                        t_board[r_start-i, c_start] = piece
                         if config.W_KING in t_board:
                             if not is_check(player, t_board):
                                 return False
@@ -431,7 +431,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start+r, c_start-c] = piece
                             if config.W_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -443,7 +443,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start+c] = piece
                             if config.W_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -455,7 +455,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start-c] = piece
                             if config.W_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -490,7 +490,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start+r, c_start-c] = piece
                             if config.W_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -502,7 +502,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start+c] = piece
                             if config.W_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -514,7 +514,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start-c] = piece
                             if config.W_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -557,7 +557,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start+r, c_start-c] = piece
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -708,7 +708,7 @@ def is_game_over(player, board):
                     try:
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
-                        t_board[r_start-i, ] = piece
+                        t_board[r_start-i, c_start] = piece
                         if config.B_KING in t_board:
                             if not is_check(player, t_board):
                                 return False
@@ -726,6 +726,7 @@ def is_game_over(player, board):
         for r_start, c_start in zip(r_rook, c_rook):
             for i in range(config.RANKS):
                 if pm.is_valid_rook_move(piece, player, r_start, c_start, r_start, c_start+i, board):
+                    print('black king rook move?')
                     try:
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
@@ -765,7 +766,7 @@ def is_game_over(player, board):
                     try:
                         t_board = board.copy()
                         t_board[r_start, c_start] = config.EMPTY
-                        t_board[r_start-i, ] = piece
+                        t_board[r_start-i, c_start] = piece
                         if config.B_KING in t_board:
                             if not is_check(player, t_board):
                                 return False
@@ -800,7 +801,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start+r, c_start-c] = piece
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -812,7 +813,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start+c] = piece
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -824,7 +825,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start-c] = piece
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -859,7 +860,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start+r, c_start-c] = piece
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -871,7 +872,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start+c] = piece
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -883,7 +884,7 @@ def is_game_over(player, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
-                            t_board[r_start+r, c_start+c] = piece
+                            t_board[r_start-r, c_start-c] = piece
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False

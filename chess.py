@@ -214,7 +214,9 @@ def main():
             elif turn_counter % 2 != 0:
                 player = config.PLAYER_2
 
+            print('is check: ', check.is_check(player, board))
             if check.is_check(player, board):
+                print('is_checkmate?: ', check.is_game_over(player, board))
                 if check.is_game_over(player, board):
                     if player == config.PLAYER_1:
                         winning_player = config.PLAYER_2
