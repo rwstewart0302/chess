@@ -92,7 +92,7 @@ def draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, p
             elif move_piece and c == curr_piece_c and r == curr_piece_r:
                 pygame.draw.rect(screen, SELECTED_COLOR, (c*SQUARESIZE, r*SQUARESIZE, SQUARESIZE, SQUARESIZE))
 
-            elif board[r, c] == config.W_PAWN:
+            if board[r, c] == config.W_PAWN:
                 target_rect = w_pawn_image.get_rect(center=(SQUARESIZE*c+SQUARESIZE//2,SQUARESIZE*r+SQUARESIZE//2))
                 screen.blit(w_pawn_image, target_rect)
             elif board[r, c] == config.W_KNIGHT:
