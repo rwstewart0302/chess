@@ -400,7 +400,7 @@ def main():
                 pygame.display.update()
 
             elif not move_check and mouse_click_2: # if the move is not valid then ask for a move from the same player
-                turn_start_loop = False
+                turn_start = False
                 select_piece = True
                 mouse_click_2 = False
 
