@@ -843,16 +843,11 @@ def is_game_over(player, board):
         for r_start, c_start in zip(r_king, c_king):
             for r in range(2):
                 for c in range(2):
-                    print('test1: ', pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start+c, board))
-                    print('test2: ', pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start-c, board))
-                    print('test3: ', pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start+c, board))
-                    print('test4: ', pm.is_valid_king_move(piece, player, r_start, c_start, r_start-r, c_start-c, board))
                     if pm.is_valid_king_move(piece, player, r_start, c_start, r_start+r, c_start+c, board):
                         try:
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start+c] = piece
-                            print('t_board1: ', t_board)
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -865,8 +860,6 @@ def is_game_over(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start+r, c_start-c] = piece
-                            print('t_board2: ', t_board)
-
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -879,7 +872,6 @@ def is_game_over(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start-r, c_start+c] = piece
-                            print('t_board3: ', t_board)
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
@@ -892,7 +884,6 @@ def is_game_over(player, board):
                             t_board = board.copy()
                             t_board[r_start, c_start] = config.EMPTY
                             t_board[r_start-r, c_start-c] = piece
-                            print('t_board4: ', t_board)
                             if config.B_KING in t_board:
                                 if not is_check(player, t_board):
                                     return False
