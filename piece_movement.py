@@ -106,6 +106,18 @@ def is_valid_pawn_move(piece, player, r_start, c_start, r_end, c_end, board,  pr
                             else:
                                 return False
                         elif (
+                        board[r_start-1, c_start] == config.EMPTY and
+                        board[r_start-2, c_start] != config.EMPTY and
+                        (board[r_start-1, c_start-1] == config.EMPTY or board[r_start-1, c_start-1] in config.PLAYER_1_PIECES) and
+                        (board[r_start-1, c_start+1] == config.EMPTY or board[r_start-1, c_start+1] in config.PLAYER_1_PIECES)
+                        ):
+                            if (
+                            (r_end == r_start - 1 and c_end == c_start)
+                            ):
+                                return True
+                            else:
+                                return False
+                        elif (
                         board[r_start-1, c_start] != config.EMPTY and
                         (board[r_start-1, c_start-1] != config.EMPTY and board[r_start-1, c_start-1] not in config.PLAYER_1_PIECES) and
                         (board[r_start-1, c_start+1] != config.EMPTY and board[r_start-1, c_start+1] not in config.PLAYER_1_PIECES)

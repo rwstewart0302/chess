@@ -2,6 +2,7 @@ import pygame, sys, check, config, random
 
 import numpy as np
 import chess_pieces as cp
+import chess_engine as ce
 
 SQUARESIZE = 100 # pixels per square
 
@@ -80,7 +81,7 @@ def create_board():
 
     return np.flip(board, 0)
 
-def draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c):
+def draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c):
     for r in range(config.RANKS):
         for c in range(config.FILES):
             if c != curr_piece_c and r != curr_piece_r:
@@ -158,7 +159,6 @@ def main():
 
     board = create_board()
 
-    valid_piece_selection = False
     curr_piece_r = np.nan
     curr_piece_c = np.nan
     prev_piece_r = np.nan
@@ -216,7 +216,7 @@ def main():
                 game_over = True
                 print('King\'s Only Stalemate!')
 
-            draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
+            draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
             pygame.display.update()
 
             # setting our player based on turn
@@ -301,7 +301,7 @@ def main():
                         mouse_click_1 = False
                         curr_piece_c = c_start
                         curr_piece_r = r_start
-                        draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
+                        draw_board(board, move_piece, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
                         pygame.display.update()
                     else:
                         select_piece = True
@@ -309,81 +309,36 @@ def main():
 
                 if mouse_click_2:
                     if player == config.PLAYER_1:
-                        if selected_piece == config.W_PAWN:
-                            piece_move = cp.Pawn(board, player, prev_r_delta, prev_c_end, prev_moved_piece)
-                        elif selected_piece == config.W_KNIGHT:
-                            piece_move = cp.Knight(board, player)
-                        elif selected_piece == config.W_BISHOP:
-                            piece_move = cp.Bishop(board, player)
-                        elif selected_piece == config.W_KING_ROOK:
-                            piece_move = cp.Rook(board, player, selected_piece)
-                        elif selected_piece == config.W_QUEEN_ROOK:
-                            piece_move = cp.Rook(board, player, selected_piece)
-                        elif selected_piece == config.W_QUEEN:
-                            piece_move = cp.Queen(board, player)
-                        elif selected_piece == config.W_KING:
-                            piece_move = cp.King(board, player, white_can_castle_queenside, white_can_castle_kingside)
-
-                        if selected_piece in valid_pieces:
-                            board, move_check = piece_move.move(r_start, c_start, r_end, c_end)
-                            if move_check and selected_piece == config.W_QUEEN_ROOK and white_can_castle_queenside:
-                                white_can_castle_queenside = False
-                            elif move_check and selected_piece == config.W_KING_ROOK and white_can_castle_kingside:
-                                white_can_castle_kingside = False
-
-                        else:
-                            move_check = False
-
-                        if move_check and selected_piece == config.W_KING and (white_can_castle_queenside or white_can_castle_kingside):
-                            if (
-                            r_start + 1 == r_end or
-                            r_start - 1 == r_end or
-                            c_start + 1 == c_end or
-                            c_start - 1 == c_end
-                            ):
-                                white_can_castle_queenside = False
-                                white_can_castle_kingside = False
-
-                        else:
-                            pass
-
+                        can_castle_queenside = white_can_castle_queenside
+                        can_castle_kingside = white_can_castle_kingside
                     elif player == config.PLAYER_2:
-                        if selected_piece == config.B_PAWN:
-                            piece_move = cp.Pawn(board, player, prev_r_delta, prev_c_end, prev_moved_piece)
-                        elif selected_piece == config.B_KNIGHT:
-                            piece_move = cp.Knight(board, player)
-                        elif selected_piece == config.B_BISHOP:
-                            piece_move = cp.Bishop(board, player)
-                        elif selected_piece == config.B_KING_ROOK:
-                            piece_move = cp.Rook(board, player, selected_piece)
-                        elif selected_piece == config.B_QUEEN_ROOK:
-                            piece_move = cp.Rook(board, player, selected_piece)
-                        elif selected_piece == config.B_QUEEN:
-                            piece_move = cp.Queen(board, player)
-                        elif selected_piece == config.B_KING:
-                            piece_move = cp.King(board, player, black_can_castle_queenside, black_can_castle_kingside)
+                        can_castle_queenside = black_can_castle_queenside
+                        can_castle_kingside = black_can_castle_kingside
 
-                        if selected_piece in valid_pieces:
-                            board, move_check = piece_move.move(r_start, c_start, r_end, c_end)
-                            if move_check and selected_piece == config.B_QUEEN_ROOK and black_can_castle_queenside:
-                                black_can_castle_queenside = False
-                            elif move_check and selected_piece == config.B_KING_ROOK and black_can_castle_kingside:
-                                black_can_castle_kingside = False
-                        else:
-                            move_check = False
+                    pieces = cp.Pieces(board, player, prev_r_delta, prev_c_end, prev_moved_piece, selected_piece, can_castle_queenside, can_castle_kingside)
 
-                        if move_check and selected_piece == config.B_KING and (black_can_castle_queenside or black_can_castle_kingside):
-                            if (
-                            r_start + 1 == r_end or
-                            r_start - 1 == r_end or
-                            c_start + 1 == c_end or
-                            c_start - 1 == c_end
-                            ):
-                                black_can_castle_queenside = False
-                                black_can_castle_kingside = False
+                    piece_move = pieces.piece_selector
 
-                        else:
-                            pass
+                    if selected_piece in valid_pieces:
+                        board, move_check = piece_move.move(r_start, c_start, r_end, c_end)
+                        if move_check and (selected_piece == config.W_QUEEN_ROOK or selected_piece == config.B_QUEEN_ROOK) and can_castle_queenside:
+                            can_castle_queenside = False
+                        elif move_check and (selected_piece == config.W_KING_ROOK or selected_piece == config.B_KING_ROOK) and can_castle_kingside:
+                            can_castle_kingside = False
+                    else:
+                        move_check = False
+
+                    if move_check and (selected_piece == config.W_KING or selected_piece == config.B_KING) and (can_castle_queenside or can_castle_kingside):
+                        if (
+                        r_start + 1 == r_end or
+                        r_start - 1 == r_end or
+                        c_start + 1 == c_end or
+                        c_start - 1 == c_end
+                        ):
+                            can_castle_queenside = False
+                            can_castle_kingside = False
+                    else:
+                        pass
 
                 if move_check and mouse_click_2: # if the move is valid then go to the next player
                     prev_r_delta = abs(r_end - r_start)
@@ -395,7 +350,13 @@ def main():
                     turn_start = True
                     select_piece = True
                     mouse_click_2 = False
-                    prev_move_piece = True
+
+                    if player == config.PLAYER_1:
+                        white_can_castle_queenside = can_castle_queenside
+                        white_can_castle_kingside = can_castle_kingside
+                    if player == config.PLAYER_2:
+                        black_can_castle_queenside = can_castle_queenside
+                        black_can_castle_kingside = can_castle_kingside
 
                     curr_piece_r = np.nan
                     curr_piece_c = np.nan
@@ -403,7 +364,7 @@ def main():
                     prev_piece_c = c_end
                     prev_empty_r = curr_piece_r
                     prev_empty_c = curr_piece_c
-                    draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
+                    draw_board(board, move_check, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
                     pygame.display.update()
 
                 elif not move_check and mouse_click_2: # if the move is not valid then ask for a move from the same player
@@ -417,129 +378,50 @@ def main():
                     prev_piece_c = np.nan
                     prev_empty_r = np.nan
                     prev_empty_c = np.nan
-                    draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
+                    draw_board(board, move_check, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
                     pygame.display.update()
 
         elif player == AI_player and not game_over:
             while AI_turn:
-                selected_piece = random.choice(valid_pieces)
-                index_piece = np.where(board == selected_piece)
+                if player == config.PLAYER_1:
+                    can_castle_queenside = white_can_castle_queenside
+                    can_castle_kingside = white_can_castle_kingside
+                elif player == config.PLAYER_2:
+                    can_castle_queenside = black_can_castle_queenside
+                    can_castle_kingside = black_can_castle_kingside
 
-                r_start = int(index_piece[0])
-                c_start = int(index_piece[1])
+                ai_mover = ce.ai_engine(can_castle_kingside, can_castle_queenside, board, player, valid_pieces, prev_r_delta, prev_c_end, prev_moved_piece)
 
-                if AI_player == config.PLAYER_1:
-                    if selected_piece == config.W_PAWN:
-                        valid_moves = []
-                        for r in range(0, config.RANKS):
-                            for c in range(0, config.FILES):
-                                
+                board = ai_mover[0]
+                curr_piece_r = ai_mover[1]
+                curr_piece_c = ai_mover[2]
+                prev_moved_piece = ai_mover[3]
+                prev_piece_r = ai_mover[4]
+                prev_piece_c = ai_mover[5]
+                prev_empty_r = ai_mover[6]
+                prev_empty_c = ai_mover[7]
+                prev_c_end = ai_mover[8]
+                can_castle_kingside = ai_mover[9]
+                can_castle_queenside = ai_mover[10]
 
-                        piece_move = cp.Pawn(board, player, prev_r_delta, prev_c_end, prev_moved_piece)
-                    elif selected_piece == config.W_KNIGHT:
-                        piece_move = cp.Knight(board, player)
-                    elif selected_piece == config.W_BISHOP:
-                        piece_move = cp.Bishop(board, player)
-                    elif selected_piece == config.W_KING_ROOK:
-                        piece_move = cp.Rook(board, player, selected_piece)
-                    elif selected_piece == config.W_QUEEN_ROOK:
-                        piece_move = cp.Rook(board, player, selected_piece)
-                    elif selected_piece == config.W_QUEEN:
-                        piece_move = cp.Queen(board, player)
-                    elif selected_piece == config.W_KING:
-                        piece_move = cp.King(board, player, white_can_castle_queenside, white_can_castle_kingside)
+                if player == config.PLAYER_1:
+                    white_can_castle_queenside = can_castle_queenside
+                    white_can_castle_kingside = can_castle_kingside
+                if player == config.PLAYER_2:
+                    black_can_castle_queenside = can_castle_queenside
+                    black_can_castle_kingside = can_castle_kingside
 
-                    if selected_piece in valid_pieces:
-                        board, move_check = piece_move.move(r_start, c_start, r_end, c_end)
-                        if move_check and selected_piece == config.W_QUEEN_ROOK and white_can_castle_queenside:
-                            white_can_castle_queenside = False
-                        elif move_check and selected_piece == config.W_KING_ROOK and white_can_castle_kingside:
-                            white_can_castle_kingside = False
-                    else:
-                        move_check = False
+                move_check = True
+                turn_counter += 1
+                board_states.append(board)
 
-                    if move_check and selected_piece == config.W_KING and (white_can_castle_queenside or white_can_castle_kingside):
-                        if (
-                        r_start + 1 == r_end or
-                        r_start - 1 == r_end or
-                        c_start + 1 == c_end or
-                        c_start - 1 == c_end
-                        ):
-                            white_can_castle_queenside = False
-                            white_can_castle_kingside = False
-                    else:
-                        pass
+                draw_board(board, move_check, curr_piece_r, curr_piece_c, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
+                pygame.display.update()
 
-                elif AI_player == config.PLAYER_2:
-                    if selected_piece == config.B_PAWN:
-                        piece_move = cp.Pawn(board, player, prev_r_delta, prev_c_end, prev_moved_piece)
-                    elif selected_piece == config.B_KNIGHT:
-                        piece_move = cp.Knight(board, player)
-                    elif selected_piece == config.B_BISHOP:
-                        piece_move = cp.Bishop(board, player)
-                    elif selected_piece == config.B_KING_ROOK:
-                        piece_move = cp.Rook(board, player, selected_piece)
-                    elif selected_piece == config.B_QUEEN_ROOK:
-                        piece_move = cp.Rook(board, player, selected_piece)
-                    elif selected_piece == config.B_QUEEN:
-                        piece_move = cp.Queen(board, player)
-                    elif selected_piece == config.B_KING:
-                        piece_move = cp.King(board, player, black_can_castle_queenside, black_can_castle_kingside)
-
-                    if selected_piece in valid_pieces:
-                        board, move_check = piece_move.move(r_start, c_start, r_end, c_end)
-                        if move_check and selected_piece == config.B_QUEEN_ROOK and black_can_castle_queenside:
-                            black_can_castle_queenside = False
-                        elif move_check and selected_piece == config.B_KING_ROOK and black_can_castle_kingside:
-                            black_can_castle_kingside = False
-                    else:
-                        move_check = False
-
-                    if move_check and selected_piece == config.B_KING and (black_can_castle_queenside or black_can_castle_kingside):
-                        if (
-                        r_start + 1 == r_end or
-                        r_start - 1 == r_end or
-                        c_start + 1 == c_end or
-                        c_start - 1 == c_end
-                        ):
-                            black_can_castle_queenside = False
-                            black_can_castle_kingside = False
-
-                    else:
-                        pass
-
-
-                if move_check: # if the move is valid then go to the next player
-                    prev_r_delta = abs(r_end - r_start)
-                    prev_c_end = c_end
-                    prev_moved_piece = selected_piece
-                    turn_counter += 1
-                    board_states.append(board)
-
-                    turn_start = True
-                    select_piece = True
-                    prev_move_piece = True
-
-                    curr_piece_r = np.nan
-                    curr_piece_c = np.nan
-                    prev_piece_r = r_end
-                    prev_piece_c = c_end
-                    prev_empty_r = curr_piece_r
-                    prev_empty_c = curr_piece_c
-                    draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
-                    pygame.display.update()
-                    AI_turn = False
-                    break
-
-                elif not move_check: # if the move is not valid then ask for a move from the same player
-                    curr_piece_r = np.nan
-                    curr_piece_c = np.nan
-                    prev_piece_r = np.nan
-                    prev_piece_c = np.nan
-                    prev_empty_r = np.nan
-                    prev_empty_c = np.nan
-                    draw_board(board, valid_piece_selection, curr_piece_r, curr_piece_c, prev_move_piece, prev_piece_r, prev_piece_c, prev_empty_r, prev_empty_c)
-                    pygame.display.update()
+                turn_start = True
+                select_piece = True
+                AI_turn = False
+                break
 
 
 if __name__ == '__main__':
