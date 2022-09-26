@@ -1,3 +1,5 @@
+ALL_PIECES = ['WP0', 'WN0', 'WB0', 'WKR', 'WQR', 'WQ0', 'WK0', 'BP0', 'BN0', 'BB0', 'BKR', 'BQR', 'BQ0', 'BK0']
+
 PLAYER_1 = 'White'
 PLAYER_1_PIECES = ['WP0', 'WN0', 'WB0', 'WKR', 'WQR', 'WQ0', 'WK0']
 PLAYER_2 = 'Black'
